@@ -51,12 +51,4 @@
     ) log:ifThenElseIn _:SCOPE.
     
     () log:onNegativeSurface _:AssertedGraph.
-    
-    # _:P log:equalTo pack:package.
-    # _:O log:includes {
-    #     _:Graffiti pack:content _:ContentGraph.
-    # }.
-    # () log:onNegativeSurface {
-    #     () pack:onResultSurface _:ContentGraph.
-    # }.
 }.
