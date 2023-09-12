@@ -1,0 +1,5 @@
+<http://example.org/WebID> <http://example.org/name> "Ruben D.".
+<http://example.org/Depth2> <http://example.org/is> <http://example.org/Added>.
+<http://example.org/WebID> <http://example.org/name> "Ruben D. (depth 2)".
+<http://example.org/Depth3> <http://example.org/is> <http://example.org/Added>.
+<http://example.org/Depth4> <http://example.org/is> <http://example.org/Added>.
