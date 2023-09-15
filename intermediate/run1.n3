@@ -13,11 +13,12 @@
 @prefix ns1: <http://www.w3.org/2000/10/swapcontent/math#>.
 
 () pack:onDataSurface {
+    :a :b :c.
     () pack:package {
         () pack:context {
-            pack:contextGraph pack:packagedBy :Jos.
-            pack:contextGraph pack:retrievedFrom :JosDataPod.
-            pack:contextGraph pack:retrievedOn "2023-07-09"^^xsd:date.
+            pack:packageContent pack:packagedBy :Jos.
+            pack:packageContent pack:packagedFrom :JosDataPod.
+            pack:packageContent pack:packagedAt "2023-07-09"^^xsd:date.
         }.
         () pack:content {
             :WebID :name "Ruben D. (depth 2)".
@@ -31,18 +32,18 @@
     :Depth2 :is :Added.
     () pack:package {
         () pack:context {
-            pack:contextGraph pack:packagedBy :Patrick.
-            pack:contextGraph pack:retrievedFrom :PatrickDataPod.
-            pack:contextGraph pack:retrievedOn "2023-07-06"^^xsd:date.
-            pack:contextGraph pack:signatureHash "H23131jajPKJ39jJWS9WHioqrhqwoehir98hqw9her2rnf84n98dh23h8".
+            pack:packageContent pack:packagedBy :Patrick.
+            pack:packageContent pack:packagedFrom :PatrickDataPod.
+            pack:packageContent pack:packagedAt "2023-07-06"^^xsd:date.
+            pack:packageContent pack:signatureHash "H23131jajPKJ39jJWS9WHioqrhqwoehir98hqw9her2rnf84n98dh23h8".
         }.
         () pack:content {
             :Depth3 :is :Added.
             () pack:package {
                 () pack:context {
-                    pack:contextGraph pack:packagedBy :Jos.
-                    pack:contextGraph pack:retrievedFrom :JosDataPod.
-                    pack:contextGraph pack:retrievedOn "2023-07-03"^^xsd:date.
+                    pack:packageContent pack:packagedBy :Jos.
+                    pack:packageContent pack:packagedFrom :JosDataPod.
+                    pack:packageContent pack:packagedAt "2023-07-03"^^xsd:date.
                 }.
                 () pack:content {
                     :Depth4 :is :Added.

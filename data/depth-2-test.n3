@@ -17,16 +17,17 @@
 
 () pack:package {
     () pack:context {
-        pack:contextGraph pack:packagedBy :Ruben.
-        pack:contextGraph pack:retrievedFrom :RubenDataPod.
-        pack:contextGraph pack:retrievedOn "2023-07-10"^^xsd:date.
+        pack:packageContent pack:packagedBy :Ruben.
+        pack:packageContent pack:packagedFrom :RubenDataPod.
+        pack:packageContent pack:packagedAt "2023-07-10"^^xsd:date.
     }.
     () pack:content {
+        :a :b :c.
         () pack:package {
             () pack:context {
-                pack:contextGraph pack:packagedBy :Jos.
-                pack:contextGraph pack:retrievedFrom :JosDataPod.
-                pack:contextGraph pack:retrievedOn "2023-07-09"^^xsd:date.
+                pack:packageContent pack:packagedBy :Jos.
+                pack:packageContent pack:packagedFrom :JosDataPod.
+                pack:packageContent pack:packagedAt "2023-07-09"^^xsd:date.
             }.
             () pack:content {
                 :WebID :name "Ruben D. (depth 2)".
@@ -34,6 +35,4 @@
         }.
     }.
 }.
-
-
 

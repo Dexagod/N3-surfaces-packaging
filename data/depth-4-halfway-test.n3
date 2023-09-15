@@ -17,9 +17,9 @@
 
 () pack:package {
     () pack:context {
-        pack:contextGraph pack:packagedBy :Person1.
-        pack:contextGraph pack:retrievedFrom :Person1DataPod.
-        pack:contextGraph pack:retrievedOn "2023-07-10"^^xsd:date.
+        pack:packageContent pack:packagedBy :Person1.
+        pack:packageContent pack:packagedFrom :Person1DataPod.
+        pack:packageContent pack:packagedAt "2023-07-10"^^xsd:date.
     }.
     () pack:content {
         
@@ -27,9 +27,9 @@
         
         () pack:package {
             () pack:context {
-                pack:contextGraph pack:packagedBy :Ruben.
-                pack:contextGraph pack:retrievedFrom :RubenDataPod.
-                pack:contextGraph pack:retrievedOn "2023-07-08"^^xsd:date.
+                pack:packageContent pack:packagedBy :Ruben.
+                pack:packageContent pack:packagedFrom :RubenDataPod.
+                pack:packageContent pack:packagedAt "2023-07-08"^^xsd:date.
             }.
             () pack:content {    
                 
@@ -37,10 +37,10 @@
 
                 () pack:package {
                     () pack:context {
-                        pack:contextGraph pack:packagedBy :Patrick.
-                        pack:contextGraph pack:retrievedFrom :PatrickDataPod.
-                        pack:contextGraph pack:retrievedOn "2023-07-06"^^xsd:date.
-                        pack:contextGraph pack:signatureHash "H23131jajPKJ39jJWS9WHioqrhqwoehir98hqw9her2rnf84n98dh23h8".
+                        pack:packageContent pack:packagedBy :Patrick.
+                        pack:packageContent pack:packagedFrom :PatrickDataPod.
+                        pack:packageContent pack:packagedAt "2023-07-06"^^xsd:date.
+                        pack:packageContent pack:signatureHash "H23131jajPKJ39jJWS9WHioqrhqwoehir98hqw9her2rnf84n98dh23h8".
                     }.
                     () pack:content {
 
@@ -48,9 +48,9 @@
 
                         () pack:package {
                             () pack:context {
-                                pack:contextGraph pack:packagedBy :Jos.
-                                pack:contextGraph pack:retrievedFrom :JosDataPod.
-                                pack:contextGraph pack:retrievedOn "2023-07-03"^^xsd:date.
+                                pack:packageContent pack:packagedBy :Jos.
+                                pack:packageContent pack:packagedFrom :JosDataPod.
+                                pack:packageContent pack:packagedAt "2023-07-03"^^xsd:date.
                             }.
                             () pack:content {
 

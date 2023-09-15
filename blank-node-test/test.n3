@@ -17,9 +17,9 @@
 
 () pack:package {
     () pack:context {
-        pack:contextGraph pack:packagedBy :Patrick.
-        pack:contextGraph pack:retrievedFrom :PatrickDataPod.
-        pack:contextGraph pack:retrievedOn "2023-07-04"^^xsd:date.
+        pack:packageContent pack:packagedBy :Patrick.
+        pack:packageContent pack:packagedFrom :PatrickDataPod.
+        pack:packageContent pack:packagedAt "2023-07-04"^^xsd:date.
     }.
     (_:Function) pack:content {
         :WebID :name "name".
@@ -27,9 +27,9 @@
         _:Function :role :DataAnalyst.
         () pack:package {
             () pack:context {
-                pack:contextGraph pack:packagedBy :Work.
-                pack:contextGraph pack:retrievedFrom :WorkDataSpace.
-                pack:contextGraph pack:retrievedOn "2023-07-02"^^xsd:date.
+                pack:packageContent pack:packagedBy :Work.
+                pack:packageContent pack:packagedFrom :WorkDataSpace.
+                pack:packageContent pack:packagedAt "2023-07-02"^^xsd:date.
             }.
             () pack:content {
                 :Function :proof :proofHash.

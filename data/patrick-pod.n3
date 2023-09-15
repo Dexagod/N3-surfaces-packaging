@@ -17,9 +17,9 @@
 
 () pack:package {
     () pack:context {
-        pack:contextGraph pack:packagedBy :Patrick.
-        pack:contextGraph pack:retrievedFrom :PatrickDataPod.
-        pack:contextGraph pack:retrievedOn "2023-07-04"^^xsd:date.
+        pack:packageContent pack:packagedBy :Patrick.
+        pack:packageContent pack:packagedFrom :PatrickDataPod.
+        pack:packageContent pack:packagedAt "2023-07-04"^^xsd:date.
     }.
     () pack:content {
         :WebID :name "Pieter C.".

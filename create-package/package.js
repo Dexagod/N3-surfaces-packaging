@@ -1,4 +1,3 @@
-// Importing the Required Modules
 const fs = require('fs');
 const readline = require('readline');
 const program = require('commander')  
@@ -42,9 +41,9 @@ program
 () pack:package {
     () pack:context {
 `
-if(options.packagedBy) result += spacing + `pack:contextGraph pack:packagedBy <${options.packagedBy}>.\n`
-if(options.packagedFrom) result += spacing + `pack:contextGraph pack:packagedFrom <${options.packagedFrom}>.\n`
-result += spacing + `pack:contextGraph pack:packagedAt "${new Date().toISOString()}"^^xsd:dateTime.\n`
+if(options.packagedBy) result += spacing + `pack:packageContent pack:packagedBy <${options.packagedBy}>.\n`
+if(options.packagedFrom) result += spacing + `pack:packageContent pack:packagedFrom <${options.packagedFrom}>.\n`
+result += spacing + `pack:packageContent pack:packagedAt "${new Date().toISOString()}"^^xsd:dateTime.\n`
 result +=
 `    }.
     pack:content {

@@ -19,7 +19,7 @@
 (
     _:Graffiti _:Graffiti2 _:Graffiti3
     _:PackageGraph
-    _:PackageContextGraph
+    _:PackagecontentGraph
     _:PackageContentGraph
     _:SCOPE
     _:AssertedGraph
@@ -27,14 +27,14 @@
     _:Graffiti pack:package _:PackageGraph.
 
     _:PackageGraph log:includes {
-        _:Graffiti2 pack:context _:PackageContextGraph.
+        _:Graffiti2 pack:context _:PackagecontentGraph.
         _:Graffiti3 pack:content _:PackageContentGraph.
     }.
 
     (
         {
-            _:PackageContextGraph log:includes {
-                pack:contextGraph pack:packagedBy :Ruben.
+            _:PackagecontentGraph log:includes {
+                pack:packageContent pack:packagedBy :Ruben.
             }.
         } {
             # Add full package to results
