@@ -1,0 +1,69 @@
+@prefix : <http://example.org/> .
+
+@prefix fn: <http://www.w3.org/2006/xpath-functions#>.
+@prefix crypto: <http://www.w3.org/2000/10/swap/crypto#>.
+@prefix graph: <http://www.w3.org/2000/10/swap/graph#>.
+@prefix log: <http://www.w3.org/2000/10/swap/log#> .
+@prefix time: <http://www.w3.org/2000/10/swap/time#> .
+@prefix func: <http://www.w3.org/2007/rif-builtin-function#>.
+@prefix math: <http://www.w3.org/2000/10/swap/math#>.
+
+@prefix vcard: <http://www.w3.org/2006/vcard/ns#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#>.
+
+@prefix rulelogic: <urn:rule:logic:>.
+@prefix pack: <https://example.org/ns/package#>.
+@prefix log: <http://www.w3.org/2000/10/swap/log#> .
+
+() log:onDataSurface {
+    () pack:package {
+        () pack:context {
+            pack:packageContent pack:packagedBy :Person1.
+            pack:packageContent pack:packagedFrom :Person1DataPod.
+            pack:packageContent pack:packagedAt "2023-07-10"^^xsd:date.
+        }.
+        () pack:content {
+            
+            :Depth1 :is :Discarded.
+            
+            () pack:package {
+                () pack:context {
+                    pack:packageContent pack:packagedBy :Ruben.
+                    pack:packageContent pack:packagedFrom :RubenDataPod.
+                    pack:packageContent pack:packagedAt "2023-07-08"^^xsd:date.
+                }.
+                () pack:content {    
+                    
+                    :Depth2 :is :Added.
+    
+                    () pack:package {
+                        () pack:context {
+                            pack:packageContent pack:packagedBy :Patrick.
+                            pack:packageContent pack:packagedFrom :PatrickDataPod.
+                            pack:packageContent pack:packagedAt "2023-07-06"^^xsd:date.
+                            pack:packageContent pack:signatureHash "H23131jajPKJ39jJWS9WHioqrhqwoehir98hqw9her2rnf84n98dh23h8".
+                        }.
+                        () pack:content {
+    
+                            :Depth3 :is :Added.
+    
+                            () pack:package {
+                                () pack:context {
+                                    pack:packageContent pack:packagedBy :Jos.
+                                    pack:packageContent pack:packagedFrom :JosDataPod.
+                                    pack:packageContent pack:packagedAt "2023-07-03"^^xsd:date.
+                                }.
+                                () pack:content {
+    
+                                    :Depth4 :is :Added.
+                                
+                                }.
+                            }.
+                        }.
+                    }.
+                }.
+            }.
+        }.
+    }.
+}.
+

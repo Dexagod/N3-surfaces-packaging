@@ -17,6 +17,7 @@
 
 # Filter on pack:packagedBy
 (
+    _:DataSurfaceGraffiti _:DataSurface
     _:S _:P _:O
     _:Graffiti _:Surface
     _:Graffiti1
@@ -24,8 +25,10 @@
     _:AssertedGraph
     _:ContentGraph
 ) log:onNegativeSurface {
-    _:Graffiti pack:onDataSurface _:Surface.
-    _:Surface log:includes {
+
+
+    _:DataSurfaceGraffiti log:onDataSurface _:DataSurface.
+    _:DataSurface log:includes {    
         _:S _:P _:O.
     }.
 
@@ -38,7 +41,7 @@
         } 
         {
             _:AssertedGraph log:equalTo {
-                () pack:onDataSurface _:ContentGraph.
+                () log:onDataSurface _:ContentGraph.
             }.
         } 
         {

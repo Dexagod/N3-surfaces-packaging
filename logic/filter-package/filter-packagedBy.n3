@@ -17,6 +17,7 @@
 
 # Filter on pack:packagedBy
 (
+    _:DataSurfaceGraffiti _:DataSurface
     _:Graffiti _:Graffiti2 _:Graffiti3
     _:PackageGraph
     _:PackagecontentGraph
@@ -24,12 +25,17 @@
     _:SCOPE
     _:AssertedGraph
 ) log:onNegativeSurface {
-    _:Graffiti pack:package _:PackageGraph.
+    
+    _:DataSurfaceGraffiti log:onDataSurface _:DataSurface.
+    _:DataSurface log:includes {    
+        _:Graffiti pack:package _:PackageGraph.
+    }.
 
     _:PackageGraph log:includes {
         _:Graffiti2 pack:context _:PackagecontentGraph.
         _:Graffiti3 pack:content _:PackageContentGraph.
     }.
+    
 
     (
         {
@@ -43,7 +49,9 @@
             }.
         } {
             # Dive deeper into the contents to look for packages we can return
-            _:AssertedGraph log:equalTo _:PackageContentGraph.
+            _:AssertedGraph log:equalTo {
+                () log:onDataSurface _:PackageContentGraph.
+            }
         }
     ) log:ifThenElseIn _:SCOPE.
 

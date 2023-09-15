@@ -13,14 +13,18 @@
 
 @prefix rulelogic: <urn:rule:logic:>.
 @prefix pack: <https://example.org/ns/package#>.
+@prefix log: <http://www.w3.org/2000/10/swap/log#> .
 
-(_:G) log:onQuestionSurface {
-    () pack:onResultSurface _:G.
-    () log:onAnswerSurface _:G.
+() log:onDataSurface {
+    () pack:package {
+        () pack:context {
+            pack:packageContent pack:packagedBy :Ruben.
+            pack:packageContent pack:packagedFrom :RubenDataPod.
+            pack:packageContent pack:packagedAt "2023-07-09"^^xsd:date.
+        }.
+        () pack:content {
+            :WebID :name "Ruben D.".
+        }.
+    }.
 }.
 
-# (
-#     _:S _:P _:O
-# ) log:onQuerySurface {
-#     _:S _:P _:O.
-# }.
