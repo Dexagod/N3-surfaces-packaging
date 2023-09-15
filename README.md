@@ -46,9 +46,8 @@ We could opt for other solutions as well, such as:
 We could also support remote RDF (package) resources as being a valid content graph:
 ```
 (_:PackageContent) pack:package {
-    _:PackageContent log:equalTo { ... }.
-    () pack:content _:PackageContent.
-    () pack:context <https://resource.url>.
+    () pack:content <https://resource.url>.
+    () pack:context {}.
 }.
 ```
 
@@ -170,71 +169,9 @@ Maybe we do not want to allow non-graphs as a object in a surface triple, and sh
 ```
 
 
-## Requirements
 
-
-### 1. Packaged graphs should be identical to non-packaged graps
-```
-() :package {
-  () :context {}.
-  () :contents { ... }.
-}
-```
-is functionally identicalcontext to
-```
-() log:onNeutralSurface { ... }
-```
-
-### 2. Packaging must work recursively
-When we want to put context on a specific subgraph, we need to package that subgraph recursively.
-We can sign a package, and embed it in a graph when we want to add additional context.
-```
-() :package {
-  () :context {}.
-  () :contents {
-    <a> <b> <c>.
-    <d> <e> <f>.
-    () :package {
-      () :context {}.
-      () :contents {
-        <g> <h> <i>.
-      }.
-    }.
-  }.
-}.
-```
-
-Example of signing
-
-```
-() :package {
-  () :context {
-    _:contentsGraph :retrieval [
-      :origin :person2pod.
-    ].
-    _:contentsGraph :packagedBy :person1.
-    _:contentsGraph :signature _:X.
-    _:X :issuer :person1.
-    _:X :hash   "12345".
-  }.
-  () :contents {
-    () :package {
-      () :context {
-        _:contentsGraph :packagedBy :person2.
-        _:contentsGraph :retrieval [
-          :origin :person3pod.
-        ]. 
-      }.
-      () :contents {
-        <a> <b> <c>.
-      }.
-    }.
-  }.
-}.
-```
-
-
-* **The context field of a package MUST only reference the contents GRAPH of the package, and NEVER the package itself**
+<!-- 
+* **The context field of a package MUST only reference the content of the package, and NEVER the package itself or specific identifiers inside the content of the package!**
 * **What about blank nodes in nested packages? Probably not a good idea?**
 * **If I'd want to say that the content graph is NOT correct, could I do it by saying "() log:onNegativeSurface pack:packageContent" in the context?**
 
@@ -266,4 +203,4 @@ Example of signing
 
 #### RDF Surfaces Canonization
 
-For purposes such as 
+For purposes such as  -->
