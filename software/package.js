@@ -24,7 +24,7 @@ program
     .option('--sign <string>', 'Sigatures: sign package for a given WebID')
 
     // Policy options
-    .option('--policy <string>', 'Policy: path of a document containing a ODRL Policy. The policy target MUST be pack:packageContent. Policy MUST NOT have an identifier, and the top level must be a blank node (shortcoming of our parser for now)')
+    .option('--policy <string>', 'Policy: path of a document containing a ODRL Policy. The policy target MUST be pack:packageSurfaceContent. Policy MUST NOT have an identifier, and the top level must be a blank node (shortcoming of our parser for now)')
 
     // Content description options
     .option('--content-type <string>', 'Content description: content type of package contents')
@@ -59,8 +59,8 @@ program
             let result =
 `${prefixString.trim()}
 ${headers}
-() pack:package {
-    () pack:context {
+() pack:packageSurface {
+    () pack:contextSurface {
 `
  
 result += addProvenance(options)
@@ -71,7 +71,7 @@ result += addContextGraph(options)
             
 result +=
 `    };
-    pack:content {
+    pack:contentSurface {
 ${contentsString.trimEnd()}
     }.
 }.
@@ -88,9 +88,9 @@ program.parse(process.argv)
 
 function addProvenance(options) { 
     let result = ``
-    if(options.packagedBy) result += spacing + `pack:packageContent pack:packagedBy <${options.packagedBy}>.\n`
-    if(options.packagedFrom) result += spacing + `pack:packageContent pack:packagedFrom <${options.packagedFrom}>.\n`
-    result += spacing + `pack:packageContent pack:packagedAt "${new Date().toISOString()}"^^xsd:dateTime.\n`
+    if(options.packagedBy) result += spacing + `pack:packageSurfaceContent pack:packgedBy <${options.packagedBy}>.\n`
+    if(options.packagedFrom) result += spacing + `pack:packageSurfaceContent pack:packgedFrom <${options.packagedFrom}>.\n`
+    result += spacing + `pack:packageSurfaceContent pack:packgedAt "${new Date().toISOString()}"^^xsd:dateTime.\n`
     return result;
 }
 
@@ -98,10 +98,10 @@ function addSignature(options) {
     let result = ``
     if (options.sign) { 
         result += `\n
-${spacing} pack:packageContent sign:hasSignature [
+${spacing} pack:packageSurfaceContent sign:hasSignature [
   a sign:VerifiableCredential;
   sign:issuer <${options.sign}>;
-  sign:credentialsSubject pack:packageContent;
+  sign:credentialsSubject pack:packageSurfaceContent;
   sign:proof [
     a sign:DataIntegrityProof;
     sign:cryptosuite "NotImplementedException";
@@ -120,7 +120,7 @@ function addPolicy(options) {
     let result = ``
     if (options.policy) { 
         let policyGraph = fs.readFileSync(options.policy, { encoding: "utf-8" })   
-        result += `\n${spacing} pack:packageContent policy:hasUsagePolicy ${policyGraph}\n`
+        result += `\n${spacing} pack:packageSurfaceContent policy:hasUsagePolicy ${policyGraph}\n`
     }
     return result;
 }
@@ -128,8 +128,8 @@ function addPolicy(options) {
 
 function addContentDescription(options) { 
     let result = ``
-    if (options.contentType) result += spacing + `pack:packageContent pack:contentType <${options.contentType}>.\n`
-    if (options.shape) result += spacing + `pack:packageContent pack:shape <${options.shape}>.\n`
+    if (options.contentType) result += spacing + `pack:packageSurfaceContent pack:contentSurfaceType "${options.contentType}".\n`
+    if (options.shape) result += spacing + `pack:packageSurfaceContent pack:shape <${options.shape}>.\n`
     return result;
 }
 

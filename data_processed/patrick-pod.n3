@@ -16,13 +16,13 @@
 @prefix log: <http://www.w3.org/2000/10/swap/log#> .
 
 () log:onDataSurface {
-    () pack:package {
-        () pack:context {
-            pack:packageContent pack:packagedBy :Patrick.
-            pack:packageContent pack:packagedFrom :PatrickDataPod.
-            pack:packageContent pack:packagedAt "2023-07-04"^^xsd:date.
+    () pack:packageSurface {
+        () pack:contextSurface {
+            pack:packageSurfaceContent pack:packgedBy :Patrick.
+            pack:packageSurfaceContent pack:packgedFrom :PatrickDataPod.
+            pack:packageSurfaceContent pack:packgedAt "2023-07-04"^^xsd:date.
         }.
-        () pack:content {
+        () pack:contentSurface {
             :WebID :name "Pieter C.".
         }.
     }.

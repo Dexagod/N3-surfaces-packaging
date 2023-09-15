@@ -15,7 +15,7 @@
 @prefix pack: <https://example.org/ns/package#>.
 
 
-# Filter on pack:packagedBy
+# Filter on pack:packgedBy
 (
     _:DataSurfaceGraffiti _:DataSurface
     _:S _:P _:O
@@ -34,9 +34,9 @@
 
     (
         {
-            _:P log:equalTo pack:package.
+            _:P log:equalTo pack:packageSurface.
             _:O log:includes {
-                _:Graffiti1 pack:content _:ContentGraph.
+                _:Graffiti1 pack:contentSurface _:ContentGraph.
             }.
         } 
         {

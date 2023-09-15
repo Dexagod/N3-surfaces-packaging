@@ -15,41 +15,41 @@
 @prefix pack: <https://example.org/ns/package#>.
 
 
-# Filter on pack:packagedBy
+# Filter on pack:packgedBy
 (
     _:DataSurfaceGraffiti _:DataSurface
     _:Graffiti _:Graffiti2 _:Graffiti3
     _:PackageGraph
-    _:PackagecontentGraph
-    _:PackageContentGraph
+    _:packageSurfaceContentGraph
+    _:PackageSurfaceContentGraph
     _:SCOPE
     _:AssertedGraph
 ) log:onNegativeSurface {
     
     _:DataSurfaceGraffiti log:onDataSurface _:DataSurface.
     _:DataSurface log:includes {    
-        _:Graffiti pack:package _:PackageGraph.
+        _:Graffiti pack:packageSurface _:PackageGraph.
     }.
 
     _:PackageGraph log:includes {
-        _:Graffiti2 pack:context _:PackagecontentGraph.
-        _:Graffiti3 pack:content _:PackageContentGraph.
+        _:Graffiti2 pack:contextSurface _:packageSurfaceContentGraph.
+        _:Graffiti3 pack:contentSurface _:PackageSurfaceContentGraph.
     }.
     
     (
         {
-            _:PackagecontentGraph log:includes {
-                pack:packageContent pack:packagedBy :Ruben.
+            _:packageSurfaceContentGraph log:includes {
+                pack:packageSurfaceContent pack:packgedBy :Ruben.
             }.
         } {
             # Add full package to results
             _:AssertedGraph log:equalTo {
-                () pack:onResultSurface _:PackageContentGraph.
+                () pack:onResultSurface _:PackageSurfaceContentGraph.
             }.
         } {
             # Dive deeper into the contents to look for packages we can return
             _:AssertedGraph log:equalTo {
-                () log:onDataSurface _:PackageContentGraph.
+                () log:onDataSurface _:PackageSurfaceContentGraph.
             }
         }
     ) log:ifThenElseIn _:SCOPE.
