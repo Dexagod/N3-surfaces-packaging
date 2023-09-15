@@ -60,10 +60,10 @@ A small example of how it could look like:
 ```
 () pack:package {
     () pack:context {
-        pack:packageContent sign:hasSignature {
-            sign:proof { ... }sign:
-            sign:credentialsSubject pack:packageContent.
-        }
+        pack:packageContent sign:hasSignature [
+            sign:proof { ... };
+            sign:credentialsSubject pack:packageContent;
+        ].
     }.
   () pack:content { ... }.
 }
@@ -77,21 +77,21 @@ A small example of how it could look like:
 () pack:package {
     () pack:context {
         pack:packageContent policy:hasUsagePolicy [
-            <http://purl.org/dc/terms/creator> <https://web.id/sender/#me> .
-            <http://purl.org/dc/terms/description> "The Duration-restricted Data Usage policy restricts the usage of the data to a specific period." .
-            <http://purl.org/dc/terms/issued> "2022-05-19T12:00" .
-            <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/ns/odrl/2/Agreement> .
+            <http://purl.org/dc/terms/creator> <https://web.id/sender/#me> ;
+            <http://purl.org/dc/terms/description> "The Duration-restricted Data Usage policy restricts the usage of the data to a specific period." ;
+            <http://purl.org/dc/terms/issued> "2022-05-19T12:00" ;
+            <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/ns/odrl/2/Agreement> ;
             <http://www.w3.org/ns/odrl/2/permission> [
-                <http://www.w3.org/ns/odrl/2/action> <http://www.w3.org/ns/odrl/2/use> .
-                <http://www.w3.org/ns/odrl/2/assignee> <https://web.id/receiver/#me> .
-                <http://www.w3.org/ns/odrl/2/assigner> <https://web.id/sender/#me> .
-                <http://www.w3.org/ns/odrl/2/target> pack:packageContent .
+                <http://www.w3.org/ns/odrl/2/action> <http://www.w3.org/ns/odrl/2/use> ;
+                <http://www.w3.org/ns/odrl/2/assignee> <https://web.id/receiver/#me> ;
+                <http://www.w3.org/ns/odrl/2/assigner> <https://web.id/sender/#me> ;
+                <http://www.w3.org/ns/odrl/2/target> <https://example.org/ns/package#packageContent> ;
                 <http://www.w3.org/ns/odrl/2/constraint> [
-                    <http://www.w3.org/ns/odrl/2/leftOperand> <http://www.w3.org/ns/odrl/2/elapsedTime> .
-                    <http://www.w3.org/ns/odrl/2/operator> <http://www.w3.org/ns/odrl/2/eq> .
-                    <http://www.w3.org/ns/odrl/2/rightOperand> "P3M"^^<http://www.w3.org/2001/XMLSchema#duration> .
-                ].
-            ].
+                    <http://www.w3.org/ns/odrl/2/leftOperand> <http://www.w3.org/ns/odrl/2/elapsedTime> ;
+                    <http://www.w3.org/ns/odrl/2/operator> <http://www.w3.org/ns/odrl/2/eq> ;
+                    <http://www.w3.org/ns/odrl/2/rightOperand> "P3M"^^<http://www.w3.org/2001/XMLSchema#duration> ;
+                ];
+            ];
         ].
     }.
     () pack:content { ... }.
@@ -100,7 +100,7 @@ A small example of how it could look like:
 #### Provenance
 
 ```
-() :package {
+() pack:package {
     () pack:context {
         pack:packageContent pack:packagedBy <https://web.id/person1/#me>.
         pack:packageContent pack:packagedFrom <https://data.pod/person1/data/>.

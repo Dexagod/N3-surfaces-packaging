@@ -36,7 +36,6 @@
         _:Graffiti3 pack:content _:PackageContentGraph.
     }.
     
-
     (
         {
             _:PackagecontentGraph log:includes {
