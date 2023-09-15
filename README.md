@@ -13,7 +13,7 @@
 In the current version, we use `pack:packageContent` as a constant URI to reference the content graph of the current package.
 
 ```
-(_:ContentGraph) pack:package {
+(_:PackageContent) pack:package {
     () pack:content { ... }.
     () pack:context {
         pack:packageContent :predicate :object.
@@ -32,11 +32,11 @@ We could opt for other solutions as well, such as:
 
 **content graph reference**
 ```
-(_:ContentGraph) pack:package {
-    _:ContentGraph log:equalTo { ... }.
-    () pack:content _:ContentGraph.
+(_:PackageContent) pack:package {
+    _:PackageContent log:equalTo { ... }.
+    () pack:content _:PackageContent.
     () pack:context {
-        _:ContentGraph :predicate :object.
+        _:PackageContent :predicate :object.
     }.
 }.
 ```
@@ -45,9 +45,9 @@ We could opt for other solutions as well, such as:
 **Note on URLs**
 We could also support remote RDF (package) resources as being a valid content graph:
 ```
-(_:ContentGraph) pack:package {
-    _:ContentGraph log:equalTo { ... }.
-    () pack:content _:ContentGraph.
+(_:PackageContent) pack:package {
+    _:PackageContent log:equalTo { ... }.
+    () pack:content _:PackageContent.
     () pack:context <https://resource.url>.
 }.
 ```
