@@ -119,7 +119,7 @@ In this case, we want to not use `pack:packageSurfaceContent` but `pack:packageS
 ```
 () :package {
     () pack:contextSurface {
-        pack:packageSurfaceContent pack:contentSurfaceType "text/rdf-package".
+        pack:packageSurfaceContent pack:contentSurfaceType "text/rdf+package".
     }.
     () pack:contentSurface { 
         () :package {
@@ -137,7 +137,7 @@ Maybe we do not want to allow non-graphs as a object in a surface triple, and sh
 ```
 () :package {
     () pack:contextSurface {
-        pack:packageSurfaceContent pack:contentSurfaceType "text/rdf-package".
+        pack:packageSurfaceContent pack:contentSurfaceType "text/rdf+package".
     }.
     () pack:contentSurface { 
         () pack:packageSurface {

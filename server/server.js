@@ -25,7 +25,7 @@ async function route (req, res) {
     
     let response = ""
 
-    if (contentType === "text/rdf-package") {
+    if (contentType === "text/rdf+package") {
         try {
             const dataOrigin = `http://localhost:${port}/${documentName}`
             

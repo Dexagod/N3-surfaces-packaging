@@ -1,1 +1,1 @@
-node software/package.js --packaged-by https://web.id/#me --packaged-from https://data.origin/ --sign https://web.id/#me --policy examples/policy.n3 --content-type "text/rdf-package" --context-graph examples/context_graph.n3 examples/data.n3 
+node software/package.js --packaged-by https://web.id/#me --packaged-from https://data.origin/ --sign https://web.id/#me --policy examples/policy.n3 --content-type "text/rdf+package" --context-graph examples/context_graph.n3 examples/data.n3 
