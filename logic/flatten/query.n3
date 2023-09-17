@@ -18,3 +18,9 @@
     () pack:onResultSurface _:G.
     () log:onAnswerSurface _:G.
 }.
+
+# (
+#     _:S _:P _:O
+# ) log:onQuerySurface {
+#     _:S _:P _:O.
+# }.
