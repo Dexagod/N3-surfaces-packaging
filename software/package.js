@@ -120,7 +120,8 @@ function addPolicy(options) {
     let result = ``
     if (options.policy) { 
         let policyGraph = fs.readFileSync(options.policy, { encoding: "utf-8" })   
-        result += `\n${spacing} pack:packageSurfaceContent policy:hasUsagePolicy ${policyGraph}\n`
+        let indentedPolicyGraph = policyGraph.split("\n").map(function(str){ return spacing + str }).join("\n");
+        result += `\n${spacing}pack:packageSurfaceContent policy:hasUsagePolicy ${indentedPolicyGraph.trimStart()}\n`
     }
     return result;
 }

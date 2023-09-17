@@ -31,7 +31,7 @@ async function route (req, res) {
             
             // Package document
             await new Promise((resolve, reject) => { 
-                let command = exec(`node ../software/package.js --packaged-by ${programId} --packaged-from ${dataOrigin}  documents/${documentName} > ./intermediate/packaged.n3`)
+                let command = exec(`node ../software/package.js --packaged-by ${programId} --packaged-from ${dataOrigin} documents/${documentName} > ./intermediate/packaged.n3`)
                 command
                     .on('error', (e) => reject(e))
                     .on('exit', () => resolve())

@@ -5,11 +5,6 @@
 @prefix sign: <https://example.org/ns/signature#>.
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#>.
 
-@prefix pack: <https://example.org/ns/package#>.
-@prefix policy: <https://example.org/ns/policy#>.
-@prefix sign: <https://example.org/ns/signature#>.
-@prefix xsd: <http://www.w3.org/2001/XMLSchema#>.
-
 () pack:packageSurface {
     () pack:contextSurface {
         pack:packageSurfaceContent pack:packgedBy <https://rdf-packaging/demo-program/>.
