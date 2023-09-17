@@ -15,8 +15,8 @@
 @prefix pack: <https://example.org/ns/package#>.
 
 
-() pack:packageSurface {
-    () pack:contextSurface {
+|| pack:packageSurface {
+    || pack:contextSurface {
         pack:packageSurfaceContent pack:packgedBy :Patrick.
         pack:packageSurfaceContent pack:packgedFrom :PatrickDataPod.
         pack:packageSurfaceContent pack:packgedAt "2023-07-04"^^xsd:date.
@@ -25,13 +25,13 @@
         :WebID :name "name".
         :WebID :function _:Function.
         _:Function :role :DataAnalyst.
-        () pack:packageSurface {
-            () pack:contextSurface {
+        || pack:packageSurface {
+            || pack:contextSurface {
                 pack:packageSurfaceContent pack:packgedBy :Work.
                 pack:packageSurfaceContent pack:packgedFrom :WorkDataSpace.
                 pack:packageSurfaceContent pack:packgedAt "2023-07-02"^^xsd:date.
             }.
-            () pack:contentSurface {
+            || pack:contentSurface {
                 :Function :proof :proofHash.
             }.
         }.

@@ -15,7 +15,7 @@
 @prefix pack: <https://example.org/ns/package#>.
 
 (_:G) log:onQuestionSurface {
-    () pack:onResultSurface _:G.
+    || pack:onResultSurface _:G.
     () log:onAnswerSurface _:G.
 }.
 

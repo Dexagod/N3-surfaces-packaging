@@ -44,7 +44,7 @@
         } {
             # Add full package to results
             _:AssertedGraph log:equalTo {
-                () pack:onResultSurface _:PackageSurfaceContentGraph.
+                || pack:onResultSurface _:PackageSurfaceContentGraph.
             }.
         } {
             # Dive deeper into the contents to look for packages we can return

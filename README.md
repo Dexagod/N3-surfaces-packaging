@@ -14,8 +14,8 @@ In the current version, we use `pack:packageSurfaceContent` as a constant URI to
 
 ```
 (_:PackageSurfaceContent) pack:packageSurface {
-    () pack:contentSurface { ... }.
-    () pack:contextSurface {
+    || pack:contentSurface { ... }.
+    || pack:contextSurface {
         pack:packageSurfaceContent :predicate :object.
     }.
 }.
@@ -25,8 +25,8 @@ This may not be an ideal approach.
 We could opt for other solutions as well, such as:
 **quotation**
 ```
-() pack:packageSurface {
-    () pack:contentSurface { ... } {| :predicate :object |}.
+|| pack:packageSurface {
+    || pack:contentSurface { ... } {| :predicate :object |}.
 }.
 ```
 
@@ -34,8 +34,8 @@ We could opt for other solutions as well, such as:
 ```
 (_:PackageSurfaceContent) pack:packageSurface {
     _:PackageSurfaceContent log:equalTo { ... }.
-    () pack:contentSurface _:PackageSurfaceContent.
-    () pack:contextSurface {
+    || pack:contentSurface _:PackageSurfaceContent.
+    || pack:contextSurface {
         _:PackageSurfaceContent :predicate :object.
     }.
 }.
@@ -46,8 +46,8 @@ We could opt for other solutions as well, such as:
 We could also support remote RDF (package) resources as being a valid content graph:
 ```
 (_:PackageSurfaceContent) pack:packageSurface {
-    () pack:contentSurface <https://resource.url>.
-    () pack:contextSurface {}.
+    || pack:contentSurface <https://resource.url>.
+    || pack:contextSurface {}.
 }.
 ```
 
@@ -58,14 +58,14 @@ We base ourselves on the Verifiable credentials data model 2.0 for this
 
 A small example of how it could look like:
 ```
-() pack:packageSurface {
-    () pack:contextSurface {
+|| pack:packageSurface {
+    || pack:contextSurface {
         pack:packageSurfaceContent sign:hasSignature [
             sign:proof { ... };
             sign:credentialsSubject pack:packageSurfaceContent;
         ].
     }.
-  () pack:contentSurface { ... }.
+  || pack:contentSurface { ... }.
 }
 ```
 
@@ -74,8 +74,8 @@ A small example of how it could look like:
 
 A small example of how it could look like:
 ```
-() pack:packageSurface {
-    () pack:contextSurface {
+|| pack:packageSurface {
+    || pack:contextSurface {
         pack:packageSurfaceContent policy:hasUsagePolicy [
             <http://purl.org/dc/terms/creator> <https://web.id/sender/#me> ;
             <http://purl.org/dc/terms/description> "The Duration-restricted Data Usage policy restricts the usage of the data to a specific period." ;
@@ -94,19 +94,19 @@ A small example of how it could look like:
             ];
         ].
     }.
-    () pack:contentSurface { ... }.
+    || pack:contentSurface { ... }.
 }
 ```
 #### Provenance
 
 ```
-() pack:packageSurface {
-    () pack:contextSurface {
+|| pack:packageSurface {
+    || pack:contextSurface {
         pack:packageSurfaceContent pack:packgedBy <https://web.id/person1/#me>.
         pack:packageSurfaceContent pack:packgedFrom <https://data.pod/person1/data/>.
         pack:packageSurfaceContent pack:packgedAt "2022-07-04"^^xsd:date.
     }.
-    () pack:contentSurface { ... }.
+    || pack:contentSurface { ... }.
 }
 ```
 
@@ -118,15 +118,15 @@ In this case, we want to not use `pack:packageSurfaceContent` but `pack:packageS
 
 ```
 () :package {
-    () pack:contextSurface {
+    || pack:contextSurface {
         pack:packageSurfaceContent pack:contentSurfaceType "text/rdf-package".
     }.
-    () pack:contentSurface { 
+    || pack:contentSurface { 
         () :package {
-            () pack:contextSurface {
+            || pack:contextSurface {
                 pack:packageSurfaceContent pack:contentSurfaceType "text/html".
             }.
-            () pack:contentSurface "<h1> This is a HTML document </h1>".
+            || pack:contentSurface "<h1> This is a HTML document </h1>".
         }
     }.
 }
@@ -136,12 +136,12 @@ Maybe we do not want to allow non-graphs as a object in a surface triple, and sh
 
 ```
 () :package {
-    () pack:contextSurface {
+    || pack:contextSurface {
         pack:packageSurfaceContent pack:contentSurfaceType "text/rdf-package".
     }.
-    () pack:contentSurface { 
-        () pack:packageSurface {
-            () pack:contextSurface {
+    || pack:contentSurface { 
+        || pack:packageSurface {
+            || pack:contextSurface {
                 pack:packageSurfaceContent pack:contentSurfaceType "text/html".
             }.
             pack:packageSurfaceContent log:equalTo "<h1> This is a HTML document </h1>".
@@ -150,7 +150,7 @@ Maybe we do not want to allow non-graphs as a object in a surface triple, and sh
 }
 ```
 ```
-() pack:contentSurface {
+|| pack:contentSurface {
     [] pack:binaryContent "<h1> This is a HTML document </h1>".
 }
 ```
@@ -159,10 +159,10 @@ Maybe we do not want to allow non-graphs as a object in a surface triple, and sh
 
 ```
 () :package {
-    () pack:contextSurface {
+    || pack:contextSurface {
         pack:packageSurfaceContent project:partOf project:BuildingProject1.
     }.
-    () pack:contentSurface { ... }.
+    || pack:contentSurface { ... }.
 }.
 ```
 
@@ -230,8 +230,8 @@ We could represent the N3 graph-based approach easily as N-Quads,
 however we can also make a canonicalization of the RDF Surfaces approach using N-Quads:
 
 ```
-() pack:packageSurface {
-    () pack:contextSurface {
+|| pack:packageSurface {
+    || pack:contextSurface {
         pack:packageSurfaceContent pack:packgedBy <https://web.id/person1/#me>.
         pack:packageSurfaceContent pack:packgedFrom <https://data.pod/person1/data/>.
         pack:packageSurfaceContent pack:packgedAt "2022-07-04"^^xsd:date.

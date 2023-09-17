@@ -59,8 +59,8 @@ program
             let result =
 `${prefixString.trim()}
 ${headers}
-() pack:packageSurface {
-    () pack:contextSurface {
+|| pack:packageSurface {
+    || pack:contextSurface {
 `
  
 result += addProvenance(options)

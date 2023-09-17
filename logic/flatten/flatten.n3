@@ -46,7 +46,7 @@
         } 
         {
             _:AssertedGraph log:equalTo {
-                () pack:onResultSurface {
+                || pack:onResultSurface {
                     _:S _:P _:O.
                 }.
             }.

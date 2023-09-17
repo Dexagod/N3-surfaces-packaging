@@ -15,44 +15,44 @@
 @prefix pack: <https://example.org/ns/package#>.
 
 
-() pack:packageSurface {
-    () pack:contextSurface {
+|| pack:packageSurface {
+    || pack:contextSurface {
         pack:packageSurfaceContent pack:packgedBy :Person1.
         pack:packageSurfaceContent pack:packgedFrom :Person1DataPod.
         pack:packageSurfaceContent pack:packgedAt "2023-07-10"^^xsd:date.
     }.
-    () pack:contentSurface {
+    || pack:contentSurface {
         
         :Depth1 :is :Discarded.
         
-        () pack:packageSurface {
-            () pack:contextSurface {
+        || pack:packageSurface {
+            || pack:contextSurface {
                 pack:packageSurfaceContent pack:packgedBy :Ruben.
                 pack:packageSurfaceContent pack:packgedFrom :RubenDataPod.
                 pack:packageSurfaceContent pack:packgedAt "2023-07-08"^^xsd:date.
             }.
-            () pack:contentSurface {    
+            || pack:contentSurface {    
                 
                 :Depth2 :is :Added.
 
-                () pack:packageSurface {
-                    () pack:contextSurface {
+                || pack:packageSurface {
+                    || pack:contextSurface {
                         pack:packageSurfaceContent pack:packgedBy :Patrick.
                         pack:packageSurfaceContent pack:packgedFrom :PatrickDataPod.
                         pack:packageSurfaceContent pack:packgedAt "2023-07-06"^^xsd:date.
                         pack:packageSurfaceContent pack:signatureHash "H23131jajPKJ39jJWS9WHioqrhqwoehir98hqw9her2rnf84n98dh23h8".
                     }.
-                    () pack:contentSurface {
+                    || pack:contentSurface {
 
                         :Depth3 :is :Added.
 
-                        () pack:packageSurface {
-                            () pack:contextSurface {
+                        || pack:packageSurface {
+                            || pack:contextSurface {
                                 pack:packageSurfaceContent pack:packgedBy :Jos.
                                 pack:packageSurfaceContent pack:packgedFrom :JosDataPod.
                                 pack:packageSurfaceContent pack:packgedAt "2023-07-03"^^xsd:date.
                             }.
-                            () pack:contentSurface {
+                            || pack:contentSurface {
 
                                 :Depth4 :is :Added.
                             
