@@ -56,6 +56,16 @@ program
         });
 
         file.on('close', () => { 
+            let prefixes = prefixString.split('\n')
+            prefixes.filter((value, index, array) => { 
+                return array.indexOf(value) === index;
+            })
+        })
+
+// usage example:
+var a = ['a', 1, 'a', 2, '1'];
+var unique = a.filter(onlyUnique);)
+            
             let result =
 `${prefixString.trim()}
 ${headers}
@@ -71,7 +81,7 @@ result += addContextGraph(options)
             
 result +=
 `    };
-    pack:contentSurface {
+    () pack:contentSurface {
 ${contentsString.trimEnd()}
     }.
 }.
@@ -88,9 +98,9 @@ program.parse(process.argv)
 
 function addProvenance(options) { 
     let result = ``
-    if(options.packagedBy) result += spacing + `pack:packageSurfaceContent pack:packgedBy <${options.packagedBy}>.\n`
-    if(options.packagedFrom) result += spacing + `pack:packageSurfaceContent pack:packgedFrom <${options.packagedFrom}>.\n`
-    result += spacing + `pack:packageSurfaceContent pack:packgedAt "${new Date().toISOString()}"^^xsd:dateTime.\n`
+    if(options.packagedBy) result += spacing + `pack:packageSurfaceContent pack:packagedBy <${options.packagedBy}>.\n`
+    if(options.packagedFrom) result += spacing + `pack:packageSurfaceContent pack:packagedFrom <${options.packagedFrom}>.\n`
+    result += spacing + `pack:packageSurfaceContent pack:packagedAt "${new Date().toISOString()}"^^xsd:dateTime.\n`
     return result;
 }
 

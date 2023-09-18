@@ -102,9 +102,9 @@ A small example of how it could look like:
 ```
 () pack:packageSurface {
     () pack:contextSurface {
-        pack:packageSurfaceContent pack:packgedBy <https://web.id/person1/#me>.
-        pack:packageSurfaceContent pack:packgedFrom <https://data.pod/person1/data/>.
-        pack:packageSurfaceContent pack:packgedAt "2022-07-04"^^xsd:date.
+        pack:packageSurfaceContent pack:packagedBy <https://web.id/person1/#me>.
+        pack:packageSurfaceContent pack:packagedFrom <https://data.pod/person1/data/>.
+        pack:packageSurfaceContent pack:packagedAt "2022-07-04"^^xsd:date.
     }.
     () pack:contentSurface { ... }.
 }
@@ -232,9 +232,9 @@ however we can also make a canonicalization of the RDF Surfaces approach using N
 ```
 () pack:packageSurface {
     () pack:contextSurface {
-        pack:packageSurfaceContent pack:packgedBy <https://web.id/person1/#me>.
-        pack:packageSurfaceContent pack:packgedFrom <https://data.pod/person1/data/>.
-        pack:packageSurfaceContent pack:packgedAt "2022-07-04"^^xsd:date.
+        pack:packageSurfaceContent pack:packagedBy <https://web.id/person1/#me>.
+        pack:packageSurfaceContent pack:packagedFrom <https://data.pod/person1/data/>.
+        pack:packageSurfaceContent pack:packagedAt "2022-07-04"^^xsd:date.
     }.
     ( _:b0 ) pack:contentSurface { 
         <a> <b> _:b0.
@@ -251,9 +251,9 @@ _:g0 pack:packageSurface _:s0.
 _:g1 a surf:Graffiti _:s0.
 _:g1 pack:contextSurface _:s1 _:s0.
 
-pack:packageSurfaceContent pack:packgedBy <https://web.id/person1/#me> _:s1.
-pack:packageSurfaceContent pack:packgedFrom <https://data.pod/person1/data/> _:s1.
-pack:packageSurfaceContent pack:packgedAt "2022-07-04"^^xsd:date _:s1.
+pack:packageSurfaceContent pack:packagedBy <https://web.id/person1/#me> _:s1.
+pack:packageSurfaceContent pack:packagedFrom <https://data.pod/person1/data/> _:s1.
+pack:packageSurfaceContent pack:packagedAt "2022-07-04"^^xsd:date _:s1.
 
 _:g2 a surf:Graffiti _:s0.
 _:g2 surf:contains _:b0.
