@@ -58,29 +58,37 @@ program
         file.on('close', () => { 
             prefixString += `\n${headers}\n`
             let prefixes = prefixString.split('\n').map(x => x.trim())
-            prefixes = prefixes.filter((value, index, array) => { 
-                return array.indexOf(value) === index;
-            })
+            prefixes = prefixes.filter((v, i, a) => { return a.indexOf(v) === i })
             
             let result =
 `${prefixes.sort().join('\n').trim()}
 () pack:packageSurface {
     () pack:contextSurface {
 `
- 
-result += addProvenance(options)
-result += addSignature(options)
-result += addPolicy(options)
-result += addContentDescription(options)
-result += addContextGraph(options)
+            
+            result += addProvenance(options)
+            result += addSignature(options)
+            result += addPolicy(options)
+            result += addContentDescription(options)
+            result += addContextGraph(options)
+                
+            let blankNodes = Array.from(contentsString.matchAll(/_:[^\s]/g)).map(x => x[0])
+            blankNodes = blankNodes.filter((v, i, a) => { return a.indexOf(v) === i })
+
+            let graffitiString = blankNodes.length
+                ? 
+`    (
+        ${blankNodes.join('\n        ')}
+    ) pack: contentSurface {`
+                : `    () pack: contentSurface {`
             
 result +=
 `    };
-    () pack:contentSurface {
+${graffitiString}
 ${contentsString.trimEnd()}
     }.
 }.
-`   
+`
             if (options.out) {
                 fs.writeFileSync(options.out, result, { encoding: "utf-8" })
             } else { 
