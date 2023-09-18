@@ -56,19 +56,14 @@ program
         });
 
         file.on('close', () => { 
-            let prefixes = prefixString.split('\n')
-            prefixes.filter((value, index, array) => { 
+            prefixString += `\n${headers}\n`
+            let prefixes = prefixString.split('\n').map(x => x.trim())
+            prefixes = prefixes.filter((value, index, array) => { 
                 return array.indexOf(value) === index;
             })
-        })
-
-// usage example:
-var a = ['a', 1, 'a', 2, '1'];
-var unique = a.filter(onlyUnique);)
             
             let result =
-`${prefixString.trim()}
-${headers}
+`${prefixes.sort().join('\n').trim()}
 () pack:packageSurface {
     () pack:contextSurface {
 `
