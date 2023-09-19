@@ -3,6 +3,9 @@ const readline = require('readline');
 const program = require('commander')  
 
 const spacing = "        "
+const spacingt1 = "        "
+const spacingt2 = "            "
+const spacingt3 = "                "
 
 const headers = `
 @prefix pack: <https://example.org/ns/package#>.
@@ -15,6 +18,8 @@ program
     .description('Package RDF graph')
     .argument('<string>', 'path of file to package')
     
+    .option('--document-uri <string>', 'document uri')
+    
     // Provenance options
     .option('--packaged-by <string>', 'Provenance: packaging actor')
     .option('--packaged-from <string>', 'Provenance: data origin')
@@ -24,7 +29,8 @@ program
     .option('--sign <string>', 'Sigatures: sign package for a given WebID')
 
     // Policy options
-    .option('--policy <string>', 'Policy: path of a document containing a ODRL Policy. The policy target MUST be pack:packageSurfaceContent. Policy MUST NOT have an identifier, and the top level must be a blank node (shortcoming of our parser for now)')
+    .option('--duration <string>', 'Add duration requirement to policy')
+    .option('--purpose <string>', 'Add required purpose to policy')
 
     // Content description options
     .option('--content-type <string>', 'Content description: content type of package contents')
@@ -35,7 +41,6 @@ program
 
     .option('-o, --out <string>', 'output document')
     .action((path, options) => {
-        
         let parsingPrefixes = true;
         let prefixString = ""
         let contentsString = ""
@@ -72,14 +77,14 @@ program
             result += addContentDescription(options)
             result += addContextGraph(options)
                 
-            let blankNodes = Array.from(contentsString.matchAll(/_:[^\s]/g)).map(x => x[0])
+            let blankNodes = Array.from(contentsString.matchAll(/_:[^\s;.]+/g)).map(x => x[0].trim())
             blankNodes = blankNodes.filter((v, i, a) => { return a.indexOf(v) === i })
 
             let graffitiString = blankNodes.length
                 ? 
 `    (
         ${blankNodes.join('\n        ')}
-    ) pack: contentSurface {`
+    ) pack:contentSurface {`
                 : `    () pack: contentSurface {`
             
 result +=
@@ -107,6 +112,44 @@ function addProvenance(options) {
     return result;
 }
 
+
+function addPolicy (options) { 
+    if (!options.duration && !options.purpose) return '';
+    let constraints = []
+
+    if (options.duration) {
+        constraints.push(`${spacingt3}<http://www.w3.org/ns/odrl/2/constraint> [
+${spacingt3}    <http://www.w3.org/ns/odrl/2/leftOperand> <http://www.w3.org/ns/odrl/2/elapsedTime> ;
+${spacingt3}    <http://www.w3.org/ns/odrl/2/operator> <http://www.w3.org/ns/odrl/2/eq> ;
+${spacingt3}    <http://www.w3.org/ns/odrl/2/rightOperand> "${options.duration}"^^<http://www.w3.org/2001/XMLSchema#duration> ;
+${spacingt3}];`)
+    }
+        
+    if (options.purpose) {
+        constraints.push(`${spacingt3}<http://www.w3.org/ns/odrl/2/constraint> [
+${spacingt3}    <http://www.w3.org/ns/odrl/2/leftOperand> <https://w3id.org/oac#Purpose> ;
+${spacingt3}    <http://www.w3.org/ns/odrl/2/operator> <http://www.w3.org/ns/odrl/2/eq> ;
+${spacingt3}    <http://www.w3.org/ns/odrl/2/rightOperand> "${options.purpose}" ;
+${spacingt3}];`)
+    }
+
+    let policyBody = `[
+${spacingt2}<http://purl.org/dc/terms/creator> <${options.packagedBy}> ;
+${spacingt2}<http://purl.org/dc/terms/description> "Data Usage Policy" ;
+${spacingt2}<http://purl.org/dc/terms/issued> "${new Date().toISOString()}"^^xsd:dateTime ;
+${spacingt2}<http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/ns/odrl/2/Agreement> ;
+${spacingt2}<http://www.w3.org/ns/odrl/2/permission> [
+${spacingt2}    <http://www.w3.org/ns/odrl/2/action> <http://www.w3.org/ns/odrl/2/use> ;
+${spacingt2}    <http://www.w3.org/ns/odrl/2/target> <${options.documentUri}> ;
+${constraints.join('\n')}
+${spacingt2}];
+${spacingt1}].`
+    
+    let result = `\n${spacingt1}pack:packageSurfaceContent policy:hasUsagePolicy ${policyBody}\n`
+    
+    return result;
+}
+
 function addSignature(options) { 
     let result = ``
     if (options.sign) { 
@@ -128,17 +171,6 @@ ${spacing} pack:packageSurfaceContent sign:hasSignature [
     }
     return result;
 }
-
-function addPolicy(options) { 
-    let result = ``
-    if (options.policy) { 
-        let policyGraph = fs.readFileSync(options.policy, { encoding: "utf-8" })   
-        let indentedPolicyGraph = policyGraph.split("\n").map(function(str){ return spacing + str }).join("\n");
-        result += `\n${spacing}pack:packageSurfaceContent policy:hasUsagePolicy ${indentedPolicyGraph.trimStart()}\n`
-    }
-    return result;
-}
-
 
 function addContentDescription(options) { 
     let result = ``

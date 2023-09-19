@@ -4,20 +4,33 @@ const rdfParser = require("rdf-parse").default;
 const rdfSerializer = require("rdf-serialize").default;
 const stringifyStream = require('stream-to-string');
 const { exec } = require('child_process');
+const program = require('commander')  
 
-const app = express()
-const port = 3000
 
-const programId = "https://rdf-packaging/demo-program/"
+program
+    .description('RDF+package server')
+    .option('--port <string>', 'Server port')
+    .option('--duration <string>', 'Add duration requirement to policy')
+    .option('--purpose <string>', 'Add required purpose to policy')
+    .action((options) => { 
+        const app = express()
+        const port = 3000
 
-app.get('/', route)
-app.get('/*', route)
+        options.baseurl = `http://localhost:${port}/`
+        options.webid = `http://localhost:${port}/#service`
 
-app.listen(port, () => {
-  console.log(`Example app listening on port ${port}`)
-})
+        app.get('/', (req, res) => { route(req, res, options) })
+        app.get('/*', (req, res) => { route(req, res, options) })
 
-async function route (req, res) {
+        app.listen(port, () => {
+            console.log(`Server listening on port ${port}`)
+        })
+    })
+        
+program.parse(process.argv)
+
+
+async function route (req, res, options) {
     let headers = req.headers;
 
     let contentType = (headers && headers.accept) || "text/turtle"
@@ -27,13 +40,17 @@ async function route (req, res) {
 
     if (contentType === "text/rdf+package") {
         try {
-            const dataOrigin = `http://localhost:${port}/${documentName}`
+            const dataOrigin = `${options.baseurl}${documentName}`
+
+            let passedOptions = []
+            if (options.duration) passedOptions.push(`--duration ${options.duration}`)
+            if (options.purpose) passedOptions.push(`--purpose ${options.purpose}`)
             
             // Package document
             await new Promise((resolve, reject) => { 
-                let command = exec(`node ../software/package.js --packaged-by ${programId} --packaged-from ${dataOrigin} documents/${documentName} > ./intermediate/packaged.n3`)
+                let command = exec(`node ../software/package.js --document-uri ${dataOrigin} --packaged-by ${options.webid} --packaged-from ${dataOrigin} ${passedOptions.join(' ')} documents/${documentName} > ./intermediate/packaged.n3`)
                 command
-                    .on('error', (e) => reject(e))
+                    .on('error', (e) => { console.error(e); reject(e) })
                     .on('exit', () => resolve())
             }) 
 
