@@ -15,14 +15,14 @@
 @prefix pack: <https://example.org/ns/package#>.
 
 
-() pack:packageSurface {
-    () pack:contextSurface {
-        pack:packageSurfaceContent pack:packagedBy :Patrick.
-        pack:packageSurfaceContent pack:packagedFrom :PatrickDataPod.
-        pack:packageSurfaceContent pack:packagedAt "2023-07-04"^^xsd:date.
-    }.
-    () pack:contentSurface {
-        :WebID :name "Pieter C.".
-    }.
+() pack:onPackageSurface {
+    <<
+        () pack:onContentSurface {
+            :WebID :name "Pieter C.".
+        }
+    >> 
+        pack:packagedBy :Patrick;
+        pack:packagedFrom :PatrickDataPod;
+        pack:packagedAt "2023-07-04"^^xsd:date.
 }.
 

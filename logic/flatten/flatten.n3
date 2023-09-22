@@ -24,6 +24,7 @@
     _:SCOPE
     _:AssertedGraph
     _:ContentGraph
+    _:X _:Y
 ) log:onNegativeSurface {
 
 
@@ -34,9 +35,9 @@
 
     (
         {
-            _:P log:equalTo pack:packageSurface.
+            _:P log:equalTo pack:onPackageSurface.
             _:O log:includes {
-                _:Graffiti1 pack:contentSurface _:ContentGraph.
+                << _:Graffiti1 pack:onContentSurface _:ContentGraph >> _:X _:Y.
             }.
         } 
         {

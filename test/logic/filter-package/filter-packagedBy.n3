@@ -28,18 +28,18 @@
     
     _:DataSurfaceGraffiti log:onDataSurface _:DataSurface.
     _:DataSurface log:includes {    
-        _:Graffiti pack:packageSurface _:PackageGraph.
+        _:Graffiti pack:onPackageSurface _:PackageGraph.
     }.
 
     _:PackageGraph log:includes {
         _:Graffiti2 pack:contextSurface _:packageSurfaceContentGraph.
-        _:Graffiti3 pack:contentSurface _:PackageSurfaceContentGraph.
+        _:Graffiti3 pack:onContentSurface _:PackageSurfaceContentGraph.
     }.
     
     (
         {
             _:packageSurfaceContentGraph log:includes {
-                pack:packageSurfaceContent pack:packagedBy <http://localhost:3000/#service>.
+                pack:onPackageSurfaceContent pack:packagedBy <http://localhost:3000/#service>.
             }.
         } {
             # Add full package to results

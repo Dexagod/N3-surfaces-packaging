@@ -15,23 +15,23 @@
 @prefix pack: <https://example.org/ns/package#>.
 
 
-() pack:packageSurface {
+() pack:onPackageSurface {
     () pack:contextSurface {
-        pack:packageSurfaceContent pack:packagedBy :Patrick.
-        pack:packageSurfaceContent pack:packagedFrom :PatrickDataPod.
-        pack:packageSurfaceContent pack:packagedAt "2023-07-04"^^xsd:date.
+        pack:onPackageSurfaceContent pack:packagedBy :Patrick.
+        pack:onPackageSurfaceContent pack:packagedFrom :PatrickDataPod.
+        pack:onPackageSurfaceContent pack:packagedAt "2023-07-04"^^xsd:date.
     }.
-    (_:Function) pack:contentSurface {
+    (_:Function) pack:onContentSurface {
         :WebID :name "name".
         :WebID :function _:Function.
         _:Function :role :DataAnalyst.
-        () pack:packageSurface {
+        () pack:onPackageSurface {
             () pack:contextSurface {
-                pack:packageSurfaceContent pack:packagedBy :Work.
-                pack:packageSurfaceContent pack:packagedFrom :WorkDataSpace.
-                pack:packageSurfaceContent pack:packagedAt "2023-07-02"^^xsd:date.
+                pack:onPackageSurfaceContent pack:packagedBy :Work.
+                pack:onPackageSurfaceContent pack:packagedFrom :WorkDataSpace.
+                pack:onPackageSurfaceContent pack:packagedAt "2023-07-02"^^xsd:date.
             }.
-            () pack:contentSurface {
+            () pack:onContentSurface {
                 :Function :proof :proofHash.
             }.
         }.

@@ -15,24 +15,28 @@
 @prefix pack: <https://example.org/ns/package#>.
 
 
-() pack:packageSurface {
-    () pack:contextSurface {
-        pack:packageSurfaceContent pack:packagedBy :Ruben.
-        pack:packageSurfaceContent pack:packagedFrom :RubenDataPod.
-        pack:packageSurfaceContent pack:packagedAt "2023-07-10"^^xsd:date.
-    }.
-    () pack:contentSurface {
-        :a :b :c.
-        () pack:packageSurface {
-            () pack:contextSurface {
-                pack:packageSurfaceContent pack:packagedBy :Jos.
-                pack:packageSurfaceContent pack:packagedFrom :JosDataPod.
-                pack:packageSurfaceContent pack:packagedAt "2023-07-09"^^xsd:date.
+() pack:onPackageSurface {
+    << 
+        () pack:onContentSurface {
+            :a :b :c.
+            () pack:onPackageSurface {
+                () pack:contextSurface {
+                    
+                }.
+                <<
+                    () pack:onContentSurface {
+                        :WebID :name "Ruben D. (depth 2)".
+                    }
+                >> 
+                    pack:packagedBy :Jos;
+                    pack:packagedFrom :JosDataPod;
+                    pack:packagedAt "2023-07-09"^^xsd:date.
+
             }.
-            () pack:contentSurface {
-                :WebID :name "Ruben D. (depth 2)".
-            }.
-        }.
-    }.
+        } 
+    >> 
+        pack:packagedBy :Ruben;
+        pack:packagedFrom :RubenDataPod;
+        pack:packagedAt "2023-07-10"^^xsd:date.
 }.
 

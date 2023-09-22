@@ -1,10 +1,9 @@
 const fs = require('fs');
 const readline = require('readline');
 
-const spacing = "        "
-const spacingt1 = "        "
-const spacingt2 = "            "
-const spacingt3 = "                "
+const singleSpacing = "\t"
+const doubleSpacing = "\t\t"
+const tripleSpacing = "\t\t\t"
 
 const headers = `
 @prefix pack: <https://example.org/ns/package#>.
@@ -32,128 +31,127 @@ exports.default = async function packageContent(path, options) {
             } 
             
             if (parsingPrefixes) prefixString += line + `\n`
-            else contentsString += spacing + line + `\n`
+            else contentsString += tripleSpacing + line + `\n`
         });
 
         file.on('close', () => { 
             prefixString += `\n${headers}\n`
             let prefixes = prefixString.split('\n').map(x => x.trim())
             prefixes = prefixes.filter((v, i, a) => { return a.indexOf(v) === i })
-            
-            let result =
-`${prefixes.sort().join('\n').trim()}
-() pack:packageSurface {
-    () pack:contextSurface {
-`
-        
-            result += addProvenance(options)
-            result += addSignature(options)
-            result += addPolicy(options)
-            result += addContentDescription(options)
-            result += addContextGraph(options)
-                
+
+  
             let blankNodes = Array.from(contentsString.matchAll(/_:[^\s;.]+/g)).map(x => x[0].trim())
             blankNodes = blankNodes.filter((v, i, a) => { return a.indexOf(v) === i })
-
             let graffitiString = blankNodes.length
                 ? 
-`    (
-        ${blankNodes.join('\n        ')}
-    ) pack:contentSurface {`
-            : `    () pack: contentSurface {`
-        
-result +=
-`    };
+`${singleSpacing}<<
+${doubleSpacing}(
+${tripleSpacing}${blankNodes.join(`\n${doubleSpacing}`)}
+${doubleSpacing}) pack:onContentSurface {`
+                :
+`${singleSpacing}<<
+${doubleSpacing}() pack: onContentSurface {`
+
+
+            let result =
+`${prefixes.sort().join('\n').trim()}
+() pack:onPackageSurface {
 ${graffitiString}
 ${contentsString.trimEnd()}
-    }.
-}.
+${doubleSpacing}}
+${singleSpacing}>>
 `
-        resolve(result)
+            result +=
+                [].concat(
+                    addProvenance(options, doubleSpacing)
+                ).concat(
+                    addSignature(options, doubleSpacing)
+                ).concat(
+                    addPolicy(options, doubleSpacing)
+                ).concat(
+                    addContentDescription(options, doubleSpacing)
+                ).join(`;\n`) + ".\n"   
+            
+            result += `}.`
+            resolve(result)
         })        
     })
 };
 
-function addProvenance(options) { 
-    let result = ``
-    if(options.packagedBy) result += spacing + `pack:packageSurfaceContent pack:packagedBy <${options.packagedBy}>.\n`
-    if(options.packagedFrom) result += spacing + `pack:packageSurfaceContent pack:packagedFrom <${options.packagedFrom}>.\n`
-    result += spacing + `pack:packageSurfaceContent pack:packagedAt "${new Date().toISOString()}"^^xsd:dateTime.\n`
-    return result;
+function addProvenance(options, spacing) {
+    let metadata = []
+    if(options.packagedBy) metadata.push(`${spacing}pack:onPackageSurfaceContent pack:packagedBy <${options.packagedBy}>`)
+    if(options.packagedFrom) metadata.push(`${spacing}pack:onPackageSurfaceContent pack:packagedFrom <${options.packagedFrom}>`)
+    metadata.push(`${spacing}pack:onPackageSurfaceContent pack:packagedAt "${new Date().toISOString()}"^^xsd:dateTime`)
+    return metadata;
 }
 
 
-function addPolicy (options) { 
-    if (!options.duration && !options.purpose) return '';
+function addPolicy(options, spacing) { 
+    let metadata = []
+
+    if (!options.duration && !options.purpose) return metadata;
+
     let constraints = []
 
     if (options.duration) {
-        constraints.push(`${spacingt3}<http://www.w3.org/ns/odrl/2/constraint> [
-${spacingt3}    <http://www.w3.org/ns/odrl/2/leftOperand> <http://www.w3.org/ns/odrl/2/elapsedTime> ;
-${spacingt3}    <http://www.w3.org/ns/odrl/2/operator> <http://www.w3.org/ns/odrl/2/eq> ;
-${spacingt3}    <http://www.w3.org/ns/odrl/2/rightOperand> "${options.duration}"^^<http://www.w3.org/2001/XMLSchema#duration> ;
-${spacingt3}];`)
+        constraints.push(
+`${spacing}${doubleSpacing}<http://www.w3.org/ns/odrl/2/constraint> [
+${spacing}${tripleSpacing}<http://www.w3.org/ns/odrl/2/leftOperand> <http://www.w3.org/ns/odrl/2/elapsedTime> ;
+${spacing}${tripleSpacing}<http://www.w3.org/ns/odrl/2/operator> <http://www.w3.org/ns/odrl/2/eq> ;
+${spacing}${tripleSpacing}<http://www.w3.org/ns/odrl/2/rightOperand> "${options.duration}"^^<http://www.w3.org/2001/XMLSchema#duration> ;
+${spacing}${doubleSpacing}]`)
     }
         
     if (options.purpose) {
-        constraints.push(`${spacingt3}<http://www.w3.org/ns/odrl/2/constraint> [
-${spacingt3}    <http://www.w3.org/ns/odrl/2/leftOperand> <https://w3id.org/oac#Purpose> ;
-${spacingt3}    <http://www.w3.org/ns/odrl/2/operator> <http://www.w3.org/ns/odrl/2/eq> ;
-${spacingt3}    <http://www.w3.org/ns/odrl/2/rightOperand> "${options.purpose}" ;
-${spacingt3}];`)
+        constraints.push(
+`${spacing}${doubleSpacing}<http://www.w3.org/ns/odrl/2/constraint> [
+${spacing}${tripleSpacing}<http://www.w3.org/ns/odrl/2/leftOperand> <https://w3id.org/oac#Purpose> ;
+${spacing}${tripleSpacing}<http://www.w3.org/ns/odrl/2/operator> <http://www.w3.org/ns/odrl/2/eq> ;
+${spacing}${tripleSpacing}<http://www.w3.org/ns/odrl/2/rightOperand> "${options.purpose}" ;
+${spacing}${doubleSpacing}]`)
     }
 
-    let policyBody = `[
-${spacingt2}<http://purl.org/dc/terms/creator> <${options.packagedBy}> ;
-${spacingt2}<http://purl.org/dc/terms/description> "Data Usage Policy" ;
-${spacingt2}<http://purl.org/dc/terms/issued> "${new Date().toISOString()}"^^xsd:dateTime ;
-${spacingt2}<http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/ns/odrl/2/Agreement> ;
-${spacingt2}<http://www.w3.org/ns/odrl/2/permission> [
-${spacingt2}    <http://www.w3.org/ns/odrl/2/action> <http://www.w3.org/ns/odrl/2/use> ;
-${spacingt2}    <http://www.w3.org/ns/odrl/2/target> <${options.documentUri}> ;
-${constraints.join('\n')}
-${spacingt2}];
-${spacingt1}].`
+    let policyBody =
+`${spacing}policy:hasUsagePolicy [
+${spacing}${singleSpacing}<http://purl.org/dc/terms/creator> <${options.packagedBy}> ;
+${spacing}${singleSpacing}<http://purl.org/dc/terms/description> "Data Usage Policy" ;
+${spacing}${singleSpacing}<http://purl.org/dc/terms/issued> "${new Date().toISOString()}"^^xsd:dateTime ;
+${spacing}${singleSpacing}<http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/ns/odrl/2/Agreement> ;
+${spacing}${singleSpacing}<http://www.w3.org/ns/odrl/2/permission> [
+${spacing}${doubleSpacing}<http://www.w3.org/ns/odrl/2/action> <http://www.w3.org/ns/odrl/2/use> ;
+${spacing}${doubleSpacing}<http://www.w3.org/ns/odrl/2/target> <${options.documentUri}> ;
+${constraints.join(';\n')};\n
+${spacing}${singleSpacing}];
+${spacing}]`    
     
-    let result = `\n${spacingt1}pack:packageSurfaceContent policy:hasUsagePolicy ${policyBody}\n`
-    
-    return result;
+    return [policyBody];
 }
 
-function addSignature(options) { 
-    let result = ``
-    if (options.sign) { 
-        result += `\n
-${spacing} pack:packageSurfaceContent sign:hasSignature [
-  a sign:VerifiableCredential;
-  sign:issuer <${options.sign}>;
-  sign:credentialsSubject pack:packageSurfaceContent;
-  sign:proof [
-    a sign:DataIntegrityProof;
-    sign:cryptosuite "NotImplementedException";
-    sign:created "${new Date().toISOString()}"^^xsd:dateTime;
-    sign:proofPurpose sign:assertionMethod;
-    sign:verificationMethod: "NotImplementedException";
-    sign:proofValue: "NotImplementedException";
-  ];
-].\n
-`
+function addSignature(options, spacing) {
+    let metadata = []
+    if (options.sign) {
+        metadata.push(
+`${spacing}sign:hasSignature [
+${spacing}${singleSpacing}a sign:VerifiableCredential;
+${spacing}${singleSpacing}sign:issuer <${options.sign}>;
+${spacing}${singleSpacing}sign:credentialsSubject pack:onPackageSurfaceContent;
+${spacing}${singleSpacing}sign:proof [
+${spacing}${doubleSpacing}a sign:DataIntegrityProof;
+${spacing}${doubleSpacing}sign:cryptosuite "NotImplementedException";
+${spacing}${doubleSpacing}sign:created "${new Date().toISOString()}"^^xsd:dateTime;
+${spacing}${doubleSpacing}sign:proofPurpose sign:assertionMethod;
+${spacing}${doubleSpacing}sign:verificationMethod: "NotImplementedException";
+${spacing}${doubleSpacing}sign:proofValue: "NotImplementedException";
+${spacing}${singleSpacing}];
+${spacing}]`)
     }
-    return result;
+    return metadata;
 }
 
-function addContentDescription(options) { 
-    let result = ``
-    if (options.contentType) result += spacing + `pack:packageSurfaceContent pack:contentSurfaceType "${options.contentType}".\n`
-    if (options.shape) result += spacing + `pack:packageSurfaceContent pack:shape <${options.shape}>.\n`
-    return result;
-}
-
-function addContextGraph(options) { 
-    let result = ``
-    if (options.contextGraph) { 
-        let contextGraph = fs.readFileSync(options.contextGraph, { encoding: "utf-8" })
-        result += `\n${contextGraph}\n`
-    }
-    return result;
+function addContentDescription(options, spacing) { 
+    let metadata = []
+    if (options.contentType) metadata.push(`${spacing}pack:onPackageSurfaceContent pack:onContentSurfaceType "${options.contentType}"`)
+    if (options.shape) metadata += (`${spacing}pack:onPackageSurfaceContent pack:shape <${options.shape}>`)
+    return metadata;
 }

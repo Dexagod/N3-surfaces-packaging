@@ -3,36 +3,75 @@
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#>.
 
 :a :b :c.
-() pack:packageSurface {
-    () pack:contextSurface {
-        pack:packageSurfaceContent pack:packagedBy :Jos.
-        pack:packageSurfaceContent pack:packagedFrom :JosDataPod.
-        pack:packageSurfaceContent pack:packagedAt "2023-07-09"^^xsd:date.
-    }.
-    () pack:contentSurface {
+() pack:onPackageSurface {
+    () pack:contextSurface true.
+    <<() pack:onContentSurface {
         :WebID :name "Ruben D. (depth 2)".
-    }.
+    }>> pack:packagedBy :Jos.
+    <<() pack:onContentSurface {
+        :WebID :name "Ruben D. (depth 2)".
+    }>> pack:packagedFrom :JosDataPod.
+    <<() pack:onContentSurface {
+        :WebID :name "Ruben D. (depth 2)".
+    }>> pack:packagedAt "2023-07-09"^^xsd:date.
 }.
 :WebID :name "Ruben D.".
 :Depth2 :is :Added.
-() pack:packageSurface {
-    () pack:contextSurface {
-        pack:packageSurfaceContent pack:packagedBy :Patrick.
-        pack:packageSurfaceContent pack:packagedFrom :PatrickDataPod.
-        pack:packageSurfaceContent pack:packagedAt "2023-07-06"^^xsd:date.
-        pack:packageSurfaceContent pack:signatureHash "H23131jajPKJ39jJWS9WHioqrhqwoehir98hqw9her2rnf84n98dh23h8".
-    }.
-    () pack:contentSurface {
+() pack:onPackageSurface {
+    <<() pack:onContentSurface {
         :Depth3 :is :Added.
-        () pack:packageSurface {
-            () pack:contextSurface {
-                pack:packageSurfaceContent pack:packagedBy :Jos.
-                pack:packageSurfaceContent pack:packagedFrom :JosDataPod.
-                pack:packageSurfaceContent pack:packagedAt "2023-07-03"^^xsd:date.
-            }.
-            () pack:contentSurface {
+        () pack:onPackageSurface {
+            <<() pack:onContentSurface {
                 :Depth4 :is :Added.
-            }.
+            }>> pack:packagedBy :Jos.
+            <<() pack:onContentSurface {
+                :Depth4 :is :Added.
+            }>> pack:packagedFrom :JosDataPod.
+            <<() pack:onContentSurface {
+                :Depth4 :is :Added.
+            }>> pack:packagedAt "2023-07-03"^^xsd:date.
         }.
-    }.
+    }>> pack:packagedBy :Patrick.
+    <<() pack:onContentSurface {
+        :Depth3 :is :Added.
+        () pack:onPackageSurface {
+            <<() pack:onContentSurface {
+                :Depth4 :is :Added.
+            }>> pack:packagedBy :Jos.
+            <<() pack:onContentSurface {
+                :Depth4 :is :Added.
+            }>> pack:packagedFrom :JosDataPod.
+            <<() pack:onContentSurface {
+                :Depth4 :is :Added.
+            }>> pack:packagedAt "2023-07-03"^^xsd:date.
+        }.
+    }>> pack:packagedFrom :PatrickDataPod.
+    <<() pack:onContentSurface {
+        :Depth3 :is :Added.
+        () pack:onPackageSurface {
+            <<() pack:onContentSurface {
+                :Depth4 :is :Added.
+            }>> pack:packagedBy :Jos.
+            <<() pack:onContentSurface {
+                :Depth4 :is :Added.
+            }>> pack:packagedFrom :JosDataPod.
+            <<() pack:onContentSurface {
+                :Depth4 :is :Added.
+            }>> pack:packagedAt "2023-07-03"^^xsd:date.
+        }.
+    }>> pack:packagedAt "2023-07-06"^^xsd:date.
+    <<() pack:onContentSurface {
+        :Depth3 :is :Added.
+        () pack:onPackageSurface {
+            <<() pack:onContentSurface {
+                :Depth4 :is :Added.
+            }>> pack:packagedBy :Jos.
+            <<() pack:onContentSurface {
+                :Depth4 :is :Added.
+            }>> pack:packagedFrom :JosDataPod.
+            <<() pack:onContentSurface {
+                :Depth4 :is :Added.
+            }>> pack:packagedAt "2023-07-03"^^xsd:date.
+        }.
+    }>> pack:signatureHash "H23131jajPKJ39jJWS9WHioqrhqwoehir98hqw9her2rnf84n98dh23h8".
 }.

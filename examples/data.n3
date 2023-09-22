@@ -1,5 +1,5 @@
 @prefix : <http://example.org/> .
 
-:WebID :name "Ruben D.".
+_:b1 :name "Ruben D.".
 
 
