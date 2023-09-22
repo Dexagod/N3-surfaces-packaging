@@ -17,9 +17,9 @@
 
 () pack:packageSurface {
     () pack:contextSurface {
-        pack:packageSurfaceContent pack:packgedBy :Ruben.
-        pack:packageSurfaceContent pack:packgedFrom :RubenDataPod.
-        pack:packageSurfaceContent pack:packgedAt "2023-07-09"^^xsd:date.
+        pack:packageSurfaceContent pack:packagedBy :Ruben.
+        pack:packageSurfaceContent pack:packagedFrom :RubenDataPod.
+        pack:packageSurfaceContent pack:packagedAt "2023-07-09"^^xsd:date.
     }.
     () pack:contentSurface {
         :WebID :name "Ruben D.".

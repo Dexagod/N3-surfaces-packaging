@@ -1,6 +1,5 @@
 const fs = require('fs');
 const readline = require('readline');
-const program = require('commander')  
 
 const spacing = "        "
 const spacingt1 = "        "
@@ -14,33 +13,9 @@ const headers = `
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#>.
 `
 
-program
-    .description('Package RDF graph')
-    .argument('<string>', 'path of file to package')
-    
-    .option('--document-uri <string>', 'document uri')
-    
-    // Provenance options
-    .option('--packaged-by <string>', 'Provenance: packaging actor')
-    .option('--packaged-from <string>', 'Provenance: data origin')
-    // .option('-a, --packaged-at <string>', 'Time of packaging')
+exports.default = async function packageContent(path, options) {
 
-    // Signature options
-    .option('--sign <string>', 'Sigatures: sign package for a given WebID')
-
-    // Policy options
-    .option('--duration <string>', 'Add duration requirement to policy')
-    .option('--purpose <string>', 'Add required purpose to policy')
-
-    // Content description options
-    .option('--content-type <string>', 'Content description: content type of package contents')
-    .option('--shape <string>', 'Content description: URL of a SHACL shape file')
-
-    // Other metadata options
-    .option('--context-graph <string>', 'Other metadata: path of a document containing a metadata graph')
-
-    .option('-o, --out <string>', 'output document')
-    .action((path, options) => {
+    return new Promise((resolve, reject) => { 
         let parsingPrefixes = true;
         let prefixString = ""
         let contentsString = ""
@@ -70,7 +45,7 @@ program
 () pack:packageSurface {
     () pack:contextSurface {
 `
-            
+        
             result += addProvenance(options)
             result += addSignature(options)
             result += addPolicy(options)
@@ -85,8 +60,8 @@ program
 `    (
         ${blankNodes.join('\n        ')}
     ) pack:contentSurface {`
-                : `    () pack: contentSurface {`
-            
+            : `    () pack: contentSurface {`
+        
 result +=
 `    };
 ${graffitiString}
@@ -94,15 +69,10 @@ ${contentsString.trimEnd()}
     }.
 }.
 `
-            if (options.out) {
-                fs.writeFileSync(options.out, result, { encoding: "utf-8" })
-            } else { 
-                console.log(result)
-            }
+        resolve(result)
         })        
-    });
-
-program.parse(process.argv)
+    })
+};
 
 function addProvenance(options) { 
     let result = ``

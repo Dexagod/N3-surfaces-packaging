@@ -34,6 +34,8 @@ async function route (req, res, options) {
     let headers = req.headers;
 
     let contentType = (headers && headers.accept) || "text/turtle"
+    if (contentType === "*/*") contentType = "text/turtle"
+    
     let documentName = req.url.slice(1);
     
     let response = ""
@@ -48,7 +50,7 @@ async function route (req, res, options) {
             
             // Package document
             await new Promise((resolve, reject) => { 
-                let command = exec(`node ../software/package.js --document-uri ${dataOrigin} --packaged-by ${options.webid} --packaged-from ${dataOrigin} ${passedOptions.join(' ')} documents/${documentName} > ./intermediate/packaged.n3`)
+                let command = exec(`node ../software/packaging/bin/package.js --document-uri ${dataOrigin} --packaged-by ${options.webid} --packaged-from ${dataOrigin} ${passedOptions.join(' ')} documents/${documentName} > ./intermediate/packaged.n3`)
                 command
                     .on('error', (e) => { console.error(e); reject(e) })
                     .on('exit', () => resolve())
@@ -66,7 +68,7 @@ async function route (req, res, options) {
             try {
                 // Put document on data surface
                 await new Promise((resolve, reject) => { 
-                    let command = exec(`node ../software/move-to-surface.js -s onDataSurface documents/${documentName} > ./intermediate/onsurface.n3`)
+                    let command = exec(`node ../software/move-to-surface/bin/move-to-surface.js -s onDataSurface documents/${documentName} > ./intermediate/onsurface.n3`)
                     command
                         .on('error', (e) => reject(e))
                         .on('exit', () => resolve())

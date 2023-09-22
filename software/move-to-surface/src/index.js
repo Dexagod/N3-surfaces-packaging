@@ -1,14 +1,9 @@
 const fs = require('fs');
 const readline = require('readline');
-const program = require('commander')  
-
 const spacing = "    "
 
-program
-    .description('move-to-surface')
-    .argument('<string>', 'path of file of which to move contents to surface')
-    .option('-s, --surface-name <string>', 'Surface name')
-    .action((path, options) => {        
+exports.default = function moveToSurface(path, options) {   
+    return new Promise((resolve, reject) => {
         let parsingPrefixes = true;
         let prefixString = ""
         let contentsString = ""
@@ -30,19 +25,13 @@ program
 
         file.on('close', () => { 
             let result =
-`${prefixString.trim()}
+    `${prefixString.trim()}
 @prefix log: <http://www.w3.org/2000/10/swap/log#> .
 
 () log:${options.surfaceName || "onNeutralSurface"} {
 ${contentsString.trimEnd()}
-}.
-`   
-            if (options.out) {
-                fs.writeFileSync(options.out, result, { encoding: "utf-8" })
-            } else { 
-                console.log(result)
-            }
+}.`   
+            resolve(result);
         })        
-    });
-
-program.parse(process.argv)
+    })
+};

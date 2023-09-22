@@ -17,9 +17,9 @@
 
 () pack:packageSurface {
     () pack:contextSurface {
-        pack:packageSurfaceContent pack:packgedBy :Patrick.
-        pack:packageSurfaceContent pack:packgedFrom :PatrickDataPod.
-        pack:packageSurfaceContent pack:packgedAt "2023-07-04"^^xsd:date.
+        pack:packageSurfaceContent pack:packagedBy :Patrick.
+        pack:packageSurfaceContent pack:packagedFrom :PatrickDataPod.
+        pack:packageSurfaceContent pack:packagedAt "2023-07-04"^^xsd:date.
     }.
     (_:Function) pack:contentSurface {
         :WebID :name "name".
@@ -27,9 +27,9 @@
         _:Function :role :DataAnalyst.
         () pack:packageSurface {
             () pack:contextSurface {
-                pack:packageSurfaceContent pack:packgedBy :Work.
-                pack:packageSurfaceContent pack:packgedFrom :WorkDataSpace.
-                pack:packageSurfaceContent pack:packgedAt "2023-07-02"^^xsd:date.
+                pack:packageSurfaceContent pack:packagedBy :Work.
+                pack:packageSurfaceContent pack:packagedFrom :WorkDataSpace.
+                pack:packageSurfaceContent pack:packagedAt "2023-07-02"^^xsd:date.
             }.
             () pack:contentSurface {
                 :Function :proof :proofHash.

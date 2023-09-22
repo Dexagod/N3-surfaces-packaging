@@ -15,7 +15,7 @@
 @prefix pack: <https://example.org/ns/package#>.
 
 
-# Filter on pack:packgedBy
+# Filter on pack:packagedBy
 (
     _:DataSurfaceGraffiti _:DataSurface
     _:Graffiti _:Graffiti2 _:Graffiti3
@@ -39,7 +39,7 @@
     (
         {
             _:packageSurfaceContentGraph log:includes {
-                pack:packageSurfaceContent pack:packgedBy :Ruben.
+                pack:packageSurfaceContent pack:packagedBy :Ruben.
             }.
         } {
             # Add full package to results
