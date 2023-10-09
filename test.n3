@@ -1,0 +1,121 @@
+@prefix pack: <https://example.org/ns/package#>.
+@prefix : <http://example.org/>.
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#>.
+@prefix policy: <https://example.org/ns/policy#>.
+@prefix log: <http://www.w3.org/2000/10/swap/log#> .
+
+() log:onDataSurface {
+    () pack:onPackageSurface {
+        <<(_:e_b0_1) pack:onContentSurface {
+            :a :b _:e_b0_1.
+            _:e_b0_1 :c :d.
+        }>> pack:packagedBy <http://localhost:3000/#service>.
+        <<(_:e_b0_1) pack:onContentSurface {
+            :a :b _:e_b0_1.
+            _:e_b0_1 :c :d.
+        }>> pack:packagedFrom <http://localhost:3000/document1>.
+        <<(_:e_b0_1) pack:onContentSurface {
+            :a :b _:e_b0_1.
+            _:e_b0_1 :c :d.
+        }>> pack:packagedAt "2023-09-22T14:23:56.847Z"^^xsd:dateTime.
+        <<(_:e_b0_1) pack:onContentSurface {
+            :a :b _:e_b0_1.
+            _:e_b0_1 :c :d.
+        }>> policy:hasUsagePolicy _:bn_78.
+        _:bn_78 <http://purl.org/dc/terms/creator> <http://localhost:3000/#service>.
+        _:bn_78 <http://purl.org/dc/terms/description> "Data Usage Policy".
+        _:bn_78 <http://purl.org/dc/terms/issued> "2023-09-22T14:23:56.848Z"^^xsd:dateTime.
+        _:bn_78 a <http://www.w3.org/ns/odrl/2/Agreement>.
+        _:bn_78 <http://www.w3.org/ns/odrl/2/permission> _:bn_84.
+        _:bn_84 <http://www.w3.org/ns/odrl/2/action> <http://www.w3.org/ns/odrl/2/use>.
+        _:bn_84 <http://www.w3.org/ns/odrl/2/target> <http://localhost:3000/document1>.
+        _:bn_84 <http://www.w3.org/ns/odrl/2/constraint> _:bn_86.
+        _:bn_86 <http://www.w3.org/ns/odrl/2/leftOperand> <http://www.w3.org/ns/odrl/2/elapsedTime>.
+        _:bn_86 <http://www.w3.org/ns/odrl/2/operator> <http://www.w3.org/ns/odrl/2/eq>.
+        _:bn_86 <http://www.w3.org/ns/odrl/2/rightOperand> "P3M"^^xsd:duration.
+        _:bn_84 <http://www.w3.org/ns/odrl/2/constraint> _:bn_88.
+        _:bn_88 <http://www.w3.org/ns/odrl/2/leftOperand> <https://w3id.org/oac#Purpose>.
+        _:bn_88 <http://www.w3.org/ns/odrl/2/operator> <http://www.w3.org/ns/odrl/2/eq>.
+        _:bn_88 <http://www.w3.org/ns/odrl/2/rightOperand> <https://example.org/ns#Research>.
+    }.
+}.
+@prefix : <http://example.org/> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#>.
+@prefix pack: <https://example.org/ns/package#>.
+
+@prefix policy: <https://example.org/ns/policy#>.
+
+@prefix graph: <http://www.w3.org/2000/10/swap/graph#>.
+@prefix log: <http://www.w3.org/2000/10/swap/log#> .
+@prefix time: <http://www.w3.org/2000/10/swap/time#> .
+@prefix func: <http://www.w3.org/2007/rif-builtin-function#>.
+@prefix math: <http://www.w3.org/2000/10/swapcontent/math#>.
+@prefix pred: <http://www.w3.org/2007/rif-builtin-predicate#>.
+
+
+# Filter on pack:packagedBy
+(
+    _:DataSurfaceGraffiti _:DataSurface
+    _:Graffiti _:Graffiti2 _:Graffiti3
+    _:PackageGraph
+    _:PackageSurfaceContextGraph
+    _:PackageSurfaceContentGraph
+    _:SCOPE
+    _:AssertedGraph
+    _:X _:Y
+    _:Policy _:Permission _:Constraint
+    _:Purpose
+    _:PolicyNotExpiredYet
+) log:onNegativeSurface {
+    
+    _:DataSurfaceGraffiti log:onDataSurface _:DataSurface.
+    _:DataSurface log:includes {    
+        _:Graffiti pack:onPackageSurface _:PackageGraph.
+    }.
+
+    (
+        { 
+            _:PackageGraph log:includes {
+                << _:Graffiti2 pack:onContentSurface _:PackageSurfaceContentGraph >> policy:hasUsagePolicy _:Policy.
+                _:Policy <http://purl.org/dc/terms/issued> _:IssueDateTime.
+                _:Policy <http://www.w3.org/ns/odrl/2/permission> _:Permission.
+                _:Permission <http://www.w3.org/ns/odrl/2/action> <http://www.w3.org/ns/odrl/2/use>.
+                _:Permission <http://www.w3.org/ns/odrl/2/constraint> _:Constraint.
+
+                _:Constraint <http://www.w3.org/ns/odrl/2/leftOperand> <https://w3id.org/oac#Purpose> ;
+                _:Constraint <http://www.w3.org/ns/odrl/2/operator> <http://www.w3.org/ns/odrl/2/eq> ;
+                _:Constraint <http://www.w3.org/ns/odrl/2/rightOperand> _:Purpose ;
+            }.
+        }
+        { 
+            (
+                {   
+                    _:Purpose log:equalTo <https://example.org/ns#Researchsadada>.
+                } {
+                    # Add full package to results
+                    _:AssertedGraph log:equalTo {
+                        () pack:onResultSurface { _:Graffiti pack:onPackageSurface _:PackageGraph. }.
+                    }.
+                } {
+                    # Dive deeper into the contents to look for packages we can return
+                    _:AssertedGraph log:equalTo {
+                        () log:onDataSurface _:PackageSurfaceContentGraph.
+                    }
+                }
+            ) log:ifThenElseIn _:SCOPE.
+        }
+        {
+            _:AssertedGraph log:equalTo {
+                () pack:onResultSurface { _:Graffiti pack:onPackageSurface _:PackageGraph. }.
+            }.
+        }
+    ) log:ifThenElseIn _:SCOPE.
+
+    () log:onNegativeSurface _:AssertedGraph.
+}.
+
+
+(_:G) log:onQuestionSurface {
+    () pack:onResultSurface _:G.
+    () log:onAnswerSurface _:G.
+}.

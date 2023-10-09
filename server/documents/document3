@@ -12,9 +12,9 @@
 			_:b0 :c :d .
 		}
 	>>
-		pack:onPackageSurfaceContent pack:packagedBy <http://localhost:3000/#service>;
-		pack:onPackageSurfaceContent pack:packagedFrom <http://localhost:3000/document1>;
-		pack:onPackageSurfaceContent pack:packagedAt "2023-09-22T14:54:03.010Z"^^xsd:dateTime;
+		pack:packagedBy <http://localhost:3000/#service>;
+		pack:packagedFrom <http://localhost:3000/document1>;
+		pack:packagedAt "2023-09-22T14:54:03.010Z"^^xsd:dateTime;
 		policy:hasUsagePolicy [
 			<http://purl.org/dc/terms/creator> <http://localhost:3000/#service> ;
 			<http://purl.org/dc/terms/description> "Data Usage Policy" ;

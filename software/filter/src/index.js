@@ -1,63 +1,84 @@
+let createDateFilter = require('./filterUseDate').default
+let createPurposeFilter = require('./filterPurpose').default
+let createProvenanceFilter = require('./filterProvenance').default
 
-exports.default = function createFilterLogicPackagedBy(packagedBy) { 
+const program = require('commander') 
+const { moveContentToSurface } = require('../../move-to-surface/')
+const { exec } = require("child_process");
+const fs = require('fs');
 
-    return(`
-@prefix : <http://example.org/> .
-@prefix xsd: <http://www.w3.org/2001/XMLSchema#>.
-@prefix pack: <https://example.org/ns/package#>.
+/**
+ * @param {string} path // Path of file to filter packages from
+ * @param {Object} options 
+ * @param {string} options.packagedBy // Filter on actor that did the packaging
+ * @param {string} options.packagedFrom // Filter on data origin
+ * @param {string} options.purpose // Fitler on purpose of use
+ * @returns 
+ */
+exports.filterPackagesFromFile = function filterPackagesFromFile(path, options) {
+    let content = fs.readFileSync(path, {encoding: "utf-8"})
+    return processContent(content, options)
+}
 
-@prefix graph: <http://www.w3.org/2000/10/swap/graph#>.
-@prefix log: <http://www.w3.org/2000/10/swap/log#> .
-@prefix time: <http://www.w3.org/2000/10/swap/time#> .
-@prefix func: <http://www.w3.org/2007/rif-builtin-function#>.
-@prefix math: <http://www.w3.org/2000/10/swapcontent/math#>.
+/**
+ * 
+ * @param {string} content // content to move on the given surface
+ * @param {Object} options 
+ * @param {string} options.packagedBy // Filter on actor that did the packaging
+ * @param {string} options.packagedFrom // Filter on data origin
+ * @param {string} options.purpose // Fitler on purpose of use
+ * @returns 
+ */
+exports.filterPackagesFromContent = function filterPackagesFromContent(content, options) {
+    return processContent(content, options)
+}
 
 
-# Filter on pack:packagedBy
-(
-    _:DataSurfaceGraffiti _:DataSurface
-    _:Graffiti _:Graffiti2 _:Graffiti3
-    _:PackageGraph
-    _:PackageSurfaceContextGraph
-    _:PackageSurfaceContentGraph
-    _:SCOPE
-    _:AssertedGraph
-    _:X _:Y
-) log:onNegativeSurface {
+/**
+ * 
+ * @param {string[]} lines // Lines of the content
+ * @param {Object} options 
+ * @param {string} options.surfaceName // name of the surface to move the content towards
+ */
+async function processContent(content, options) { 
+
+    let dateFilter = createDateFilter();
+    content = await runFilter(content, dateFilter, "Filter packages on usage date")
+
+    if (options.purpose) { 
+        let purposeFilter = createPurposeFilter(options.purpose);
+        content = await runFilter(content, purposeFilter, "Filter packages on usage purpose")
+    }
+
+    if (options.packagedBy || options.packagedFrom) { 
+        let provenanceFilter = createProvenanceFilter(options);
+        content = await runFilter(content, provenanceFilter, "Filter packages on provenance information")
+    }
+
+    return content
     
-    _:DataSurfaceGraffiti log:onDataSurface _:DataSurface.
-    _:DataSurface log:includes {    
-        _:Graffiti pack:onPackageSurface _:PackageGraph.
-    }.
-    _:PackageGraph log:includes {
-        << _:Graffiti2 pack:onContentSurface _:PackageSurfaceContentGraph >> _:X _:Y.
-    }.
-    
-    (
-        {
-            _:PackageGraph log:includes {
-                << _:Graffiti3 pack:onContentSurface _:PackageSurfaceContentGraph >> pack:packagedBy <${packagedBy}>.
-            }.
-        } {
-            # Add full package to results
-            _:AssertedGraph log:equalTo {
-                () pack:onResultSurface _:PackageSurfaceContentGraph.
-            }.
-        } {
-            # Dive deeper into the contents to look for packages we can return
-            _:AssertedGraph log:equalTo {
-                () log:onDataSurface _:PackageSurfaceContentGraph.
+}
+
+async function runFilter(content, filter, reason) { 
+    console.error(`Executing filter: ${reason}`)
+    let contentSurface = await moveContentToSurface(content, { surfaceName: "onDataSurface" })
+    let combinedDocuments = `${contentSurface}\n${filter}`
+    console.log(combinedDocuments)
+
+    var result = await execPromise(`echo '${combinedDocuments}' | eye --quiet --nope --blogic -`);
+    return result
+}
+
+
+function execPromise(command) {
+    return new Promise(function(resolve, reject) {
+        exec(command, (error, stdout, stderr) => {
+            if (error) {
+                reject(error);
+                return;
             }
-        }
-    ) log:ifThenElseIn _:SCOPE.
 
-    () log:onNegativeSurface _:AssertedGraph.
-}.
-
-
-(_:G) log:onQuestionSurface {
-    () pack:onResultSurface _:G.
-    () log:onAnswerSurface _:G.
-}.
-    `)
+            resolve(stdout.trim());
+        });
+    });
 }

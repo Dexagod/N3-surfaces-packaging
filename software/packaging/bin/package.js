@@ -1,4 +1,4 @@
-const package = require('..').default
+const packageFileContent = require('..').packageFileContent
 const program = require('commander')
 const fs = require('fs')
 
@@ -29,7 +29,7 @@ program
 
     .option('-o, --out <string>', 'output document')
     .action(async (path, options) => {
-        let packageString = await package(path, options)
+        let packageString = await packageFileContent(path, options)
         if (options.out) {
             fs.writeFileSync(options.out, packageString)
         } else { 

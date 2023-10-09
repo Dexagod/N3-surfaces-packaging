@@ -106,7 +106,6 @@ A small example of how it could look like:
 () pack:onPackageSurface {
     <<() pack:onContentSurface { ... }>> sign:hasSignature [
         sign:proof { ... };
-        sign:credentialsSubject pack:onPackageSurfaceContent;
     ].
 }
 ```
@@ -162,6 +161,7 @@ A small example of how it could look like:
 
 ## Limitations - Problems:
 
+* Blank nodes HAVE to be scoped to their content surface. We CAN NOT point towards a blank nodes in the content of a package from outside. We can only repeat the information, and add additional statements about it externally through repeating the blank node. We can add information to named nodes by reusing the URIs.
 * What about non-rdf content? If we want to create something that can emulate a **Hybrid** Contextualized Knowledge Graph, we need to have support for the packaging of non-rdf content as well.
 * What about external references? E.g. packaging a url reference instead of the resource itself? I would consider this out of scope and bad practice? As then we cannot really reason about the contents itself?
 * What about signatures? Signatures gives a multitude of problems:
@@ -174,3 +174,4 @@ A small example of how it could look like:
 * Should this be its own Content Type, or an Application Profile of an existing serialization (e.g. *N3* serialization with *rdf+package* application profile)
 * Should we have standardized processing mechanisms?
 * In any case, this mechanism is designed for the **storage** and **transfer** of (hybrid) contextualized knowledge graphs. To work with the data, we first need to flatten the data back to its base RDF / other data types. To do this, we first need to filter the relevant parts of the message into usable data (RDF, ...).
+* References in signatures, policies, etc that require a target e.g. *credentialsSubject* need a way to point towards the current content of the package.

@@ -19,10 +19,8 @@
     << 
         () pack:onContentSurface {
             :a :b :c.
+
             () pack:onPackageSurface {
-                () pack:contextSurface {
-                    
-                }.
                 <<
                     () pack:onContentSurface {
                         :WebID :name "Ruben D. (depth 2)".
@@ -31,7 +29,6 @@
                     pack:packagedBy :Jos;
                     pack:packagedFrom :JosDataPod;
                     pack:packagedAt "2023-07-09"^^xsd:date.
-
             }.
         } 
     >> 

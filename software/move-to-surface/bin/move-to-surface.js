@@ -1,5 +1,5 @@
 const program = require('commander')  
-const moveToSurface = require('../').default;
+const moveFileToSurface = require('../').moveFileToSurface;
 
 program
     .description('move-to-surface')
@@ -7,7 +7,7 @@ program
     .option('-s, --surface-name <string>', 'Surface name')
     .option('-o, --out <string>', 'Output file')
     .action(async (path, options) => { 
-        let string = await moveToSurface(path, options)
+        let string = await moveFileToSurface(path, options)
         if (options.out) {
             fs.writeFileSync(options.out, string)
         } else { 
