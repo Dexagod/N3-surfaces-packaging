@@ -25,7 +25,7 @@
 				<http://www.w3.org/ns/odrl/2/constraint> [
 					<http://www.w3.org/ns/odrl/2/leftOperand> <http://www.w3.org/ns/odrl/2/elapsedTime> ;
 					<http://www.w3.org/ns/odrl/2/operator> <http://www.w3.org/ns/odrl/2/eq> ;
-					<http://www.w3.org/ns/odrl/2/rightOperand> "P1M"^^<http://www.w3.org/2001/XMLSchema#duration> ;
+					<http://www.w3.org/ns/odrl/2/rightOperand> "PT1M"^^<http://www.w3.org/2001/XMLSchema#duration> ;
 				];
 				<http://www.w3.org/ns/odrl/2/constraint> [
 					<http://www.w3.org/ns/odrl/2/leftOperand> <https://w3id.org/oac#Purpose> ;

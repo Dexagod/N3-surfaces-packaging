@@ -2,7 +2,6 @@ let createDateFilter = require('./filterUseDate').default
 let createPurposeFilter = require('./filterPurpose').default
 let createProvenanceFilter = require('./filterProvenance').default
 
-const program = require('commander') 
 const { moveContentToSurface } = require('../../move-to-surface/')
 const { exec } = require("child_process");
 const fs = require('fs');
@@ -15,7 +14,7 @@ const fs = require('fs');
  * @param {string} options.purpose // Fitler on purpose of use
  * @returns 
  */
-exports.filterPackagesFromFile = function filterPackagesFromFile(path, options) {
+exports.filterPackagesFromFile = async function filterPackagesFromFile(path, options) {
     let content = fs.readFileSync(path, {encoding: "utf-8"})
     return processContent(content, options)
 }
@@ -29,7 +28,7 @@ exports.filterPackagesFromFile = function filterPackagesFromFile(path, options) 
  * @param {string} options.purpose // Fitler on purpose of use
  * @returns 
  */
-exports.filterPackagesFromContent = function filterPackagesFromContent(content, options) {
+exports.filterPackagesFromContent = async function filterPackagesFromContent(content, options) {
     return processContent(content, options)
 }
 
