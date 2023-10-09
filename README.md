@@ -44,7 +44,7 @@ What we see in this example, is a bit of a multi-layer packaging approach.
 
 ```
 () pack:onPackageSurface { 
-    << () pack:onContentSurface {<a> <b> <c>} >> :p1 :o1; :p2 :o2.
+    << (_:b0) pack:onContentSurface { _:b0 <b> <c> } >> :p1 :o1; :p2 :o2.
 } 
 ```
 **OR mabye idea for later** 
@@ -89,11 +89,12 @@ which can be simplified to
 () pack:onPackageSurface {
     <<() pack:onContentSurface { 
         () pack:onPackageSurface {
-            <<() pack:onContentSurface { ... }>> :a1 :b1.; :a2 :b2.
+            <<() pack:onContentSurface { ... }>> :a1 :b1; :a2 :b2.
         }.
      }>> :p1 :o1; :p2 :o2.
 }.
 ```
+
 
 #### Signature
 Note: We first need to figure out how we can do canonization of RDF Surfaces notation. Maybe by reducing it to quads?
@@ -118,7 +119,8 @@ A small example of how it could look like:
 () pack:onPackageSurface {
     << 
         () pack:onContentSurface {
-            <a> <b> <c>
+            <a> <b> <c>.
+            <z> <y> <x>.
         } 
     >> policy:hasUsagePolicy [
         <http://purl.org/dc/terms/creator> <https://web.id/sender/#me> ;
@@ -129,7 +131,6 @@ A small example of how it could look like:
             <http://www.w3.org/ns/odrl/2/action> <http://www.w3.org/ns/odrl/2/use> ;
             <http://www.w3.org/ns/odrl/2/assignee> <https://web.id/receiver/#me> ;
             <http://www.w3.org/ns/odrl/2/assigner> <https://web.id/sender/#me> ;
-            <http://www.w3.org/ns/odrl/2/target> <https://example.org/ns/package#packageSurfaceContent> ;
             <http://www.w3.org/ns/odrl/2/constraint> [
                 <http://www.w3.org/ns/odrl/2/leftOperand> <http://www.w3.org/ns/odrl/2/elapsedTime> ;
                 <http://www.w3.org/ns/odrl/2/operator> <http://www.w3.org/ns/odrl/2/eq> ;
@@ -158,3 +159,18 @@ A small example of how it could look like:
     << () pack:onContentSurface { ... } >> project:partOf project:BuildingProject1.
 }
 ```
+
+## Limitations - Problems:
+
+* What about non-rdf content? If we want to create something that can emulate a **Hybrid** Contextualized Knowledge Graph, we need to have support for the packaging of non-rdf content as well.
+* What about external references? E.g. packaging a url reference instead of the resource itself? I would consider this out of scope and bad practice? As then we cannot really reason about the contents itself?
+* What about signatures? Signatures gives a multitude of problems:
+  * RDF Surfaces does not have a canonicalization algorithm yet (N3 neither afaik).
+  * If we allow any kind of content, we need to be able to serialize and sign these contents? Do we sign straight on the content binary format? e.g. gzipped http packages?
+* We need to standardize a small subset of metadata
+  * e.g. standardized HTTP headers: Content-Type, Accept, Host, ...
+  * Extensible with own metadata (HTTP allows custom headers)
+* Non-RDF data can only be part of the LEAF nodes of a package structure, you cannot e.g. nest a package in a JSON body
+* Should this be its own Content Type, or an Application Profile of an existing serialization (e.g. *N3* serialization with *rdf+package* application profile)
+* Should we have standardized processing mechanisms?
+* In any case, this mechanism is designed for the **storage** and **transfer** of (hybrid) contextualized knowledge graphs. To work with the data, we first need to flatten the data back to its base RDF / other data types. To do this, we first need to filter the relevant parts of the message into usable data (RDF, ...).

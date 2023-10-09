@@ -12,9 +12,10 @@ program
     .option('--port <string>', 'Server port')
     .option('--duration <string>', 'Add duration requirement to policy')
     .option('--purpose <string>', 'Add required purpose to policy')
+    .option('--document-location <string>', 'Location of server documents')
     .action((options) => { 
         const app = express()
-        const port = 3000
+        const port = options.port || 3000
 
         options.baseurl = `http://localhost:${port}/`
         options.webid = `http://localhost:${port}/#service`
@@ -30,7 +31,10 @@ program
 program.parse(process.argv)
 
 
-async function route (req, res, options) {
+async function route(req, res, options) {
+    let documentLocation = options.documentLocation || "documents/"
+    documentLocation = documentLocation.endsWith("/") ? documentLocation : documentLocation + "/"
+
     let headers = req.headers;
 
     let contentType = (headers && headers.accept) || "text/turtle"
@@ -50,7 +54,7 @@ async function route (req, res, options) {
             
             // Package document
             await new Promise((resolve, reject) => { 
-                let command = exec(`node ../software/packaging/bin/package.js --document-uri ${dataOrigin} --packaged-by ${options.webid} --packaged-from ${dataOrigin} ${passedOptions.join(' ')} documents/${documentName} > ./intermediate/packaged.n3`)
+                let command = exec(`node ../software/packaging/bin/package.js --document-uri ${dataOrigin} --packaged-by ${options.webid} --packaged-from ${dataOrigin} ${passedOptions.join(' ')} ${documentLocation}${documentName} > ./intermediate/packaged.n3`)
                 command
                     .on('error', (e) => { console.error(e); reject(e) })
                     .on('exit', () => resolve())
@@ -68,7 +72,7 @@ async function route (req, res, options) {
             try {
                 // Put document on data surface
                 await new Promise((resolve, reject) => { 
-                    let command = exec(`node ../software/move-to-surface/bin/move-to-surface.js -s onDataSurface documents/${documentName} > ./intermediate/onsurface.n3`)
+                    let command = exec(`node ../software/move-to-surface/bin/move-to-surface.js -s onDataSurface ${documentLocation}${documentName} > ./intermediate/onsurface.n3`)
                     command
                         .on('error', (e) => reject(e))
                         .on('exit', () => resolve())

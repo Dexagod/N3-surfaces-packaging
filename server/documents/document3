@@ -1,0 +1,34 @@
+@prefix : <http://example.org/>.
+@prefix pack: <https://example.org/ns/package#>.
+@prefix policy: <https://example.org/ns/policy#>.
+@prefix sign: <https://example.org/ns/signature#>.
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#>.
+() pack:onPackageSurface {
+	<<
+		(
+			_:b0
+		) pack:onContentSurface {
+			:a :b _:b0 .
+			_:b0 :c :d .
+		}
+	>>
+		pack:onPackageSurfaceContent pack:packagedBy <http://localhost:3000/#service>;
+		pack:onPackageSurfaceContent pack:packagedFrom <http://localhost:3000/document1>;
+		pack:onPackageSurfaceContent pack:packagedAt "2023-09-22T14:54:03.010Z"^^xsd:dateTime;
+		policy:hasUsagePolicy [
+			<http://purl.org/dc/terms/creator> <http://localhost:3000/#service> ;
+			<http://purl.org/dc/terms/description> "Data Usage Policy" ;
+			<http://purl.org/dc/terms/issued> "2023-09-22T14:54:03.010Z"^^xsd:dateTime ;
+			<http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/ns/odrl/2/Agreement> ;
+			<http://www.w3.org/ns/odrl/2/permission> [
+				<http://www.w3.org/ns/odrl/2/action> <http://www.w3.org/ns/odrl/2/use> ;
+				<http://www.w3.org/ns/odrl/2/target> <http://localhost:3000/document1> ;
+				<http://www.w3.org/ns/odrl/2/constraint> [
+					<http://www.w3.org/ns/odrl/2/leftOperand> <http://www.w3.org/ns/odrl/2/elapsedTime> ;
+					<http://www.w3.org/ns/odrl/2/operator> <http://www.w3.org/ns/odrl/2/eq> ;
+					<http://www.w3.org/ns/odrl/2/rightOperand> "P3M"^^<http://www.w3.org/2001/XMLSchema#duration> ;
+				];
+
+			];
+		].
+}.

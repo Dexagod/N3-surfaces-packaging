@@ -1,18 +1,16 @@
-@prefix : <http://example.org/> .
 
-@prefix fn: <http://www.w3.org/2006/xpath-functions#>.
-@prefix crypto: <http://www.w3.org/2000/10/swap/crypto#>.
+exports.default = function createFilterLogicPackagedBy(packagedBy) { 
+
+    return(`
+@prefix : <http://example.org/> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#>.
+@prefix pack: <https://example.org/ns/package#>.
+
 @prefix graph: <http://www.w3.org/2000/10/swap/graph#>.
 @prefix log: <http://www.w3.org/2000/10/swap/log#> .
 @prefix time: <http://www.w3.org/2000/10/swap/time#> .
 @prefix func: <http://www.w3.org/2007/rif-builtin-function#>.
 @prefix math: <http://www.w3.org/2000/10/swapcontent/math#>.
-
-@prefix vcard: <http://www.w3.org/2006/vcard/ns#> .
-@prefix xsd: <http://www.w3.org/2001/XMLSchema#>.
-
-@prefix rulelogic: <urn:rule:logic:>.
-@prefix pack: <https://example.org/ns/package#>.
 
 
 # Filter on pack:packagedBy
@@ -20,26 +18,25 @@
     _:DataSurfaceGraffiti _:DataSurface
     _:Graffiti _:Graffiti2 _:Graffiti3
     _:PackageGraph
-    _:packageSurfaceContentGraph
+    _:PackageSurfaceContextGraph
     _:PackageSurfaceContentGraph
     _:SCOPE
     _:AssertedGraph
+    _:X _:Y
 ) log:onNegativeSurface {
     
     _:DataSurfaceGraffiti log:onDataSurface _:DataSurface.
     _:DataSurface log:includes {    
         _:Graffiti pack:onPackageSurface _:PackageGraph.
     }.
-
     _:PackageGraph log:includes {
-        _:Graffiti2 pack:contextSurface _:packageSurfaceContentGraph.
-        _:Graffiti3 pack:onContentSurface _:PackageSurfaceContentGraph.
+        << _:Graffiti2 pack:onContentSurface _:PackageSurfaceContentGraph >> _:X _:Y.
     }.
     
     (
         {
-            _:packageSurfaceContentGraph log:includes {
-                pack:onPackageSurfaceContent pack:packagedBy <http://localhost:3000/#service>.
+            _:PackageGraph log:includes {
+                << _:Graffiti3 pack:onContentSurface _:PackageSurfaceContentGraph >> pack:packagedBy <${packagedBy}>.
             }.
         } {
             # Add full package to results
@@ -56,3 +53,11 @@
 
     () log:onNegativeSurface _:AssertedGraph.
 }.
+
+
+(_:G) log:onQuestionSurface {
+    () pack:onResultSurface _:G.
+    () log:onAnswerSurface _:G.
+}.
+    `)
+}
