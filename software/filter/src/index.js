@@ -60,10 +60,9 @@ async function processContent(content, options) {
 }
 
 async function runFilter(content, filter, reason) { 
-    console.error(`Executing filter: ${reason}`)
+    // console.error(`Executing filter: ${reason}`)
     let contentSurface = await moveContentToSurface(content, { surfaceName: "onDataSurface" })
     let combinedDocuments = `${contentSurface}\n${filter}`
-    console.log(combinedDocuments)
 
     var result = await execPromise(`echo '${combinedDocuments}' | eye --quiet --nope --blogic -`);
     return result
