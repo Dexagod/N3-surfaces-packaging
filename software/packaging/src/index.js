@@ -77,6 +77,10 @@ exports.packageContent = function packageContent(content, options) {
  * @param {string} options.shape // Shape of the content
  */
 function processContent(lines, options) {
+    parsingPrefixes = true;
+    prefixString = '';
+    contentsString = '';
+
     for (let line of lines) { 
         if (line.trim() !== "" && !line.trim().startsWith("@prefix")) {
             parsingPrefixes = false;
@@ -123,7 +127,7 @@ ${singleSpacing}>>
         ).join(`;\n`) + ".\n"   
         
     result += `}.`
-    resolve(result)
+    return(result)
 }
 
 function addProvenance(options, spacing) {

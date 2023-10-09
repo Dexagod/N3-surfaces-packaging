@@ -4,7 +4,8 @@ const rdfParser = require("rdf-parse").default;
 const rdfSerializer = require("rdf-serialize").default;
 const stringifyStream = require('stream-to-string');
 const { exec } = require('child_process');
-const program = require('commander')  
+const program = require('commander');  
+const { packageContent } = require('../software/packaging/');
 
 
 program
@@ -46,22 +47,11 @@ async function route(req, res, options) {
 
     if (contentType === "text/rdf+package") {
         try {
-            const dataOrigin = `${options.baseurl}${documentName}`
-
-            let passedOptions = []
-            if (options.duration) passedOptions.push(`--duration ${options.duration}`)
-            if (options.purpose) passedOptions.push(`--purpose ${options.purpose}`)
+            options.documentUri = `${options.baseurl}${documentName}`
+            options.packagedBy = options.webid
+            let data = fs.readFileSync(`./documents/${documentName}`, {encoding: 'utf-8'});
+            response = await packageContent(data, options)
             
-            // Package document
-            await new Promise((resolve, reject) => { 
-                let command = exec(`node ../software/packaging/bin/package.js --document-uri ${dataOrigin} --packaged-by ${options.webid} --packaged-from ${dataOrigin} ${passedOptions.join(' ')} ${documentLocation}${documentName} > ./intermediate/packaged.n3`)
-                command
-                    .on('error', (e) => { console.error(e); reject(e) })
-                    .on('exit', () => resolve())
-            }) 
-
-            // Return packaged document
-            response = fs.readFileSync("./intermediate/packaged.n3", { encoding: "utf-8" })
             
         } catch (e) { 
             console.error(e)
@@ -89,8 +79,13 @@ async function route(req, res, options) {
                 // Return flattened RDF document
                 let documentContent = fs.readFileSync(`./intermediate/flattened.n3`, { encoding: "utf-8" })
                 let contentStream = require("streamify-string")(documentContent)
-                let quadStream = rdfParser.parse(contentStream, { contentType: 'text/turtle', baseIRI: 'http://example.org' }).on('error', (error) => { reject(error) });
-                const textStream = rdfSerializer.serialize(quadStream, { contentType: contentType });
+                let quadStream = rdfParser.parse(contentStream, { contentType: 'text/turtle', baseIRI: options.baseurl || 'http://example.org' }).on('error', (error) => { reject(error) });
+                let textStream;
+                if ((await rdfSerializer.getContentTypes()).indexOf(contentType) === -1) { 
+                    console.error(`Error: Unrecognized content type: ${contentType}. Fallback on text/turtle.`)
+                    contentType = 'text/turtle'
+                }
+                textStream = rdfSerializer.serialize(quadStream, { contentType: contentType });   
                 let result = await stringifyStream(textStream);
                 resolve(result)
             } catch (e) {

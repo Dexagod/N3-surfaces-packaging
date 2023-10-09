@@ -1,7 +1,5 @@
 const program = require('commander')  
 const { filterPackagesFromFile } = require('../');
-const moveFileToSurface = require('../../move-to-surface/').moveFileToSurface
-const { exec } = require("child_process");
 
 program
     .description('filter')
